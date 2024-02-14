@@ -140,7 +140,7 @@ public class inGameOptions {
 
     public void quitButtonClicked(ActionEvent event) throws IOException {
         sounds.playButtonClickSound();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TicTacMainMenu.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TicTacMainMenu2.fxml"));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         mainStage.setScene(scene);
