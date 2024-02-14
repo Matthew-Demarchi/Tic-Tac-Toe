@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TicTacToe.mainMenu">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TicTacToe.mainMenu">
    <children>
       <Circle fill="DODGERBLUE" layoutX="299.0" layoutY="211.0" radius="61.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fill="DODGERBLUE" layoutX="96.0" layoutY="75.0" radius="61.0" stroke="BLACK" strokeType="INSIDE" />
@@ -32,7 +29,10 @@
       <Button fx:id="onePlayerButton" layoutX="263.0" layoutY="175.0" mnemonicParsing="false" onAction="#onePlayerModeClicked" prefHeight="17.0" prefWidth="72.0" text="VS CPU" textOverrun="CLIP" />
       <Button fx:id="twoPlayerButton" layoutX="263.0" layoutY="223.0" mnemonicParsing="false" onAction="#twoPlayerMode" prefHeight="17.0" prefWidth="72.0" text="2 PLAYER" textOverrun="CLIP" />
       <Button fx:id="exitGame" layoutX="263.0" layoutY="279.0" mnemonicParsing="false" onAction="#exitGame" prefHeight="17.0" prefWidth="72.0" text="Exit Game" textOverrun="CLIP" />
-      <Label fx:id="exitMessage" layoutX="201.0" layoutY="330.0" prefHeight="44.0" prefWidth="226.0" textFill="#ff0a0a" />
+      <Label fx:id="exitMessage" layoutX="174.0" layoutY="311.0" prefHeight="82.0" prefWidth="274.0" style="-fx-font-weight: 900; -fx-wrap-text: true;" textFill="#db4105">
+         <font>
+            <Font size="28.0" />
+         </font></Label>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
     
    </children>
