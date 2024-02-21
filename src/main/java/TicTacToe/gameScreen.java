@@ -38,21 +38,18 @@ public class gameScreen {
     //            boardButton7, boardButton8, boardButton9)
 
 
-    public gameScreen()
+    public void initialize()
     {
-        if (buttons.size() == 0)
-        {
-            buttons.add(boardButton1);
-            buttons.add(boardButton2);
-            buttons.add(boardButton3);
-            buttons.add(boardButton4);
-            buttons.add(boardButton5);
-            buttons.add(boardButton6);
-            buttons.add(boardButton7);
-            buttons.add(boardButton8);
-            buttons.add(boardButton9);
-        }
-        System.out.print(buttons.size());
+        buttons.add(boardButton1);
+        buttons.add(boardButton2);
+        buttons.add(boardButton3);
+        buttons.add(boardButton4);
+        buttons.add(boardButton5);
+        buttons.add(boardButton6);
+        buttons.add(boardButton7);
+        buttons.add(boardButton8);
+        buttons.add(boardButton9);
+        //System.out.print(buttons.size());
     }
 
     @FXML
