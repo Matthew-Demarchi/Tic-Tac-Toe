@@ -253,7 +253,11 @@ public class gameScreen {
             // Update draw count
         }
 
+
+
         // Optionally, provide an option to start a new game
+
+        playAgain();
     }
 
     // Method to check if the game is over
@@ -309,6 +313,30 @@ public class gameScreen {
         {
             winnerLine.setStyle("-fx-stroke: lime; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, lime, 3, 0.1, 0, 0);");
         }
+    }
+
+    // function to prompt the user whether to play again
+    private void playAgain(){
+
+        sounds.playButtonClickSound();
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("playAgain.fxml"));
+            Parent root = fxmlLoader.load();
+            playAgain controller = fxmlLoader.getController();
+            controller.getMainStageAndButtons((Stage) currentTurnLabel.getScene().getWindow(), buttons); // Set the main stage and buttons
+            Scene scene = new Scene(root);
+            Stage playAgainStage = new Stage();
+            playAgainStage.setScene(scene);
+            playAgainStage.showAndWait();
+
+            for (Line line : lines) {
+                line.setVisible(false);
+            }
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
     }
 
     }
