@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: darkgrey;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TicTacToe.gameScreen">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: darkgrey;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TicTacToe.gameScreen">
    <children>
       <Line endX="1.0" layoutX="335.0" layoutY="90.0" startX="1.0" startY="200.0" />
       <Line endX="1.0" layoutX="255.0" layoutY="90.0" startX="1.0" startY="200.0" />
@@ -98,5 +99,6 @@
       <Label layoutX="465.0" layoutY="9.0" prefHeight="36.0" prefWidth="95.0" text="Games won:" />
       <Label fx:id="player1WinsLabel" layoutX="465.0" layoutY="32.0" prefHeight="26.0" prefWidth="95.0" text="PLAYER1: ---" />
       <Label fx:id="player2WinsLabel" layoutX="465.0" layoutY="54.0" prefHeight="26.0" prefWidth="95.0" text="PLAYER2: ---" />
+      <Label fx:id="numOfDrawsLabel" layoutX="465.0" layoutY="80.0" text="Draws: " />
    </children>
 </AnchorPane>
