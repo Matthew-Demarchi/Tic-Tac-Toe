@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import TicTacToe.TicTacToeAI;
@@ -24,14 +25,37 @@ public class gameScreen {
     @FXML
     Label currentTurnLabel;
 
+    private static ArrayList<Button> buttonsUsed = new ArrayList<>();
+
+    @FXML
+    Button boardButton1, boardButton2, boardButton3,
+            boardButton4, boardButton5, boardButton6,
+            boardButton7, boardButton8, boardButton9;
+
     private static ArrayList<Button> buttons = new ArrayList<>();
+    //Arrays.asList(boardButton1, boardButton2, boardButton3,
+    //            boardButton4, boardButton5, boardButton6,
+    //            boardButton7, boardButton8, boardButton9)
 
 
     @FXML
     protected void boardButtonHovered(MouseEvent event)
     {
+        if (buttons.size() == 0)
+        {
+            buttons.add(boardButton1);
+            buttons.add(boardButton2);
+            buttons.add(boardButton3);
+            buttons.add(boardButton4);
+            buttons.add(boardButton5);
+            buttons.add(boardButton6);
+            buttons.add(boardButton7);
+            buttons.add(boardButton8);
+            buttons.add(boardButton9);
+        }
         Button button = (Button) event.getSource();
-        if (buttons.size() % 2 == 0)
+
+        if (buttonsUsed.size() % 2 == 0)
         {
             button.setText("X");
             button.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 0.35;");
@@ -51,7 +75,7 @@ public class gameScreen {
         {
             return;
         }
-        else if (buttons.size() % 2 == 0)
+        else if (buttonsUsed.size() % 2 == 0)
         {
             button.setText("");
             button.setStyle("-fx-text-fill: transparent; -fx-font-weight: bold; -fx-background-color: transparent;");
@@ -68,11 +92,12 @@ public class gameScreen {
         sounds.playButtonClickSound();
 
         Button button = (Button) event.getSource();
-        if (button.getText().isEmpty()) {
+        if (!button.isDisable()) {
             // Set player's move
             button.setText("X");
+            button.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, red, 3, 0.1, 0, 0);"); //
             button.setDisable(true);
-            buttons.add(button);
+            buttonsUsed.add(button);
             currentTurnLabel.setText("Current Turn: O");
             
             // Check for player win or draw
@@ -98,7 +123,7 @@ public class gameScreen {
         Scene scene = new Scene(root);
 
         inGameOptions controller = fxmlLoader.getController();
-        controller.getMainStageAndButtons((Stage)(currentTurnLabel.getScene().getWindow()), buttons);
+        controller.getMainStageAndButtons((Stage)(currentTurnLabel.getScene().getWindow()), buttonsUsed);
 
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL); // Set as modal dialog
@@ -108,16 +133,19 @@ public class gameScreen {
     } catch (IOException e){
                 e.printStackTrace();
             }
-            if (buttons.size() == 0)
+            if (buttonsUsed.size() == 0)
             {
                 currentTurnLabel.setText("Current Turn: X");
+                for (Button button : buttons) {
+                    button.setDisable(false);
+                }
             }
     }
 
     private boolean checkWin(ArrayList<Button> buttons2, String symbol) {
         // Check rows
         for (int i = 0; i < 3; i++) {
-            if (buttons.get(i * 3).getText().equals(symbol) && 
+            if (buttons.get(i * 3).getText().equals(symbol) &&
                 buttons.get(i * 3 + 1).getText().equals(symbol) && 
                 buttons.get(i * 3 + 2).getText().equals(symbol)) {
                 return true; // Winning row
@@ -176,6 +204,7 @@ public class gameScreen {
                 randomButton.setText("O"); // Assuming AI plays with 'O'
                 randomButton.setStyle("-fx-text-fill: lime; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, lime, 3, 0.1, 0, 0);");
                 randomButton.setDisable(true);
+                buttonsUsed.add(randomButton);
 
                 isGameOver();
             }
