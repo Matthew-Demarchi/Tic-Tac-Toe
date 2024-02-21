@@ -38,8 +38,7 @@ public class gameScreen {
     //            boardButton7, boardButton8, boardButton9)
 
 
-    @FXML
-    protected void boardButtonHovered(MouseEvent event)
+    public gameScreen()
     {
         if (buttons.size() == 0)
         {
@@ -53,6 +52,13 @@ public class gameScreen {
             buttons.add(boardButton8);
             buttons.add(boardButton9);
         }
+        System.out.print(buttons.size());
+    }
+
+    @FXML
+    protected void boardButtonHovered(MouseEvent event)
+    {
+
         Button button = (Button) event.getSource();
 
         if (buttonsUsed.size() % 2 == 0)
