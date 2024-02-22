@@ -25,9 +25,26 @@ import javafx.util.Duration;
 
 public class gameScreen {
 
+    int gameNumber;
+    int player1Wins; //letter x
+    int player2Wins; //letter o
+
+    int numOfDraws;
 
     @FXML
     Label currentTurnLabel;
+
+    @FXML
+    Label gameCountLabel;
+
+    @FXML
+    Label player1WinsLabel;
+
+    @FXML
+    Label player2WinsLabel;
+
+    @FXML
+    Label numOfDrawsLabel;
 
     private static ArrayList<Button> buttonsUsed = new ArrayList<>();
 
@@ -73,9 +90,33 @@ public class gameScreen {
 
 
 
+    public void initialize()
+    {
+        buttons.add(boardButton1);
+        buttons.add(boardButton2);
+        buttons.add(boardButton3);
+        buttons.add(boardButton4);
+        buttons.add(boardButton5);
+        buttons.add(boardButton6);
+        buttons.add(boardButton7);
+        buttons.add(boardButton8);
+        buttons.add(boardButton9);
+        gameNumber = 1;
+        player1Wins = 0;
+        player2Wins = 0;
+        numOfDraws = 0;
+
+        gameCountLabel.setText("GAME #" + Integer.toString(gameNumber));
+        player1WinsLabel.setText("Player 1: " + Integer.toString(player1Wins));
+        player2WinsLabel.setText("Player 2: " + Integer.toString(player2Wins));
+        numOfDrawsLabel.setText("Draws: " + Integer.toString(numOfDraws));
+        //System.out.print(buttons.size());
+    }
+
     @FXML
     protected void boardButtonHovered(MouseEvent event)
     {
+
         Button button = (Button) event.getSource();
 
         if (buttonsUsed.size() % 2 == 0)
@@ -260,18 +301,24 @@ public class gameScreen {
         if (winner.equals("X")) {
             // Player 1 wins
             // Update player 1's win count
+            player1Wins++;
+            player1WinsLabel.setText("Player 1: " + Integer.toString(player1Wins));
         } else if (winner.equals("O")) {
             // Player 2 wins (AI)
             // Update player 2's win count
+            player2Wins++;
+            player2WinsLabel.setText("Player 2: " + Integer.toString(player2Wins));
         } else {
             // It's a draw
             // Update draw count
+            numOfDraws++;
+            numOfDrawsLabel.setText("Draws: " + Integer.toString(numOfDraws));
         }
 
-
-
+        gameNumber++;
+        gameCountLabel.setText("GAME #" + Integer.toString(gameNumber));
+      
         // Optionally, provide an option to start a new game
-
         playAgain();
     }
 
