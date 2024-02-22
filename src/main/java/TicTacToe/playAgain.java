@@ -55,7 +55,10 @@ public class playAgain {
         buttons.clear();
         lines.clear();
         buttonsUsed.clear();
-        winnerLine.setVisible(false);
+        if (winnerLine != null)
+        {
+            winnerLine.setVisible(false);
+        }
 
     }
 
@@ -68,8 +71,11 @@ public class playAgain {
             buttons.get(i).setDisable(false);
         }
         buttonsUsed.clear();
-        winnerLine.setVisible(false);
+        if (winnerLine != null)
+        {
+            winnerLine.setVisible(false);
 
+        }
         Stage playAgainStage = (Stage) yesPlayAgain.getScene().getWindow();
         playAgainStage.close(); // Close the playAgain stage
     }

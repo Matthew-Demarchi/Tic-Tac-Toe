@@ -25,9 +25,26 @@ import javafx.util.Duration;
 
 public class gameScreen {
 
+    int gameNumber;
+    int player1Wins; //letter x
+    int player2Wins; //letter o
+
+    int numOfDraws;
 
     @FXML
     Label currentTurnLabel;
+
+    @FXML
+    Label gameCountLabel;
+
+    @FXML
+    Label player1WinsLabel;
+
+    @FXML
+    Label player2WinsLabel;
+
+    @FXML
+    Label numOfDrawsLabel;
 
     private static ArrayList<Button> buttonsUsed = new ArrayList<>();
 
@@ -37,13 +54,6 @@ public class gameScreen {
             boardButton7, boardButton8, boardButton9;
 
     private static ArrayList<Button> buttons = new ArrayList<>();
-    //Arrays.asList(boardButton1, boardButton2, boardButton3,
-    //            boardButton4, boardButton5, boardButton6,
-    //            boardButton7, boardButton8, boardButton9)
-    static
-    {
-
-    }
 
     @FXML
     Line topRow, middleRow, bottomRow, leftColumn, middleColumn, rightColumn, diagonalTopLeftToBottomRight, diagonalTopRightToBottomLeft;
@@ -61,6 +71,7 @@ public class gameScreen {
         buttons.add(boardButton7);
         buttons.add(boardButton8);
         buttons.add(boardButton9);
+
         lines.add(topRow);
         lines.add(middleRow);
         lines.add(bottomRow);
@@ -69,13 +80,23 @@ public class gameScreen {
         lines.add(rightColumn);
         lines.add(diagonalTopLeftToBottomRight);
         lines.add(diagonalTopRightToBottomLeft);
+
+        gameNumber = 1;
+        player1Wins = 0;
+        player2Wins = 0;
+        numOfDraws = 0;
+
+        gameCountLabel.setText("GAME #" + Integer.toString(gameNumber));
+        player1WinsLabel.setText("Player 1: " + Integer.toString(player1Wins));
+        player2WinsLabel.setText("Player 2: " + Integer.toString(player2Wins));
+        numOfDrawsLabel.setText("Draws: " + Integer.toString(numOfDraws));
+        //System.out.print(buttons.size());
     }
-
-
 
     @FXML
     protected void boardButtonHovered(MouseEvent event)
     {
+
         Button button = (Button) event.getSource();
 
         if (buttonsUsed.size() % 2 == 0)
@@ -97,11 +118,6 @@ public class gameScreen {
         if (button.isDisable())
         {
             return;
-        }
-        else if (buttonsUsed.size() % 2 == 0)
-        {
-            button.setText("");
-            button.setStyle("-fx-text-fill: transparent; -fx-font-weight: bold; -fx-background-color: transparent;");
         }
         else
         {
@@ -260,18 +276,24 @@ public class gameScreen {
         if (winner.equals("X")) {
             // Player 1 wins
             // Update player 1's win count
+            player1Wins++;
+            player1WinsLabel.setText("Player 1: " + Integer.toString(player1Wins));
         } else if (winner.equals("O")) {
             // Player 2 wins (AI)
             // Update player 2's win count
+            player2Wins++;
+            player2WinsLabel.setText("Player 2: " + Integer.toString(player2Wins));
         } else {
             // It's a draw
             // Update draw count
+            numOfDraws++;
+            numOfDrawsLabel.setText("Draws: " + Integer.toString(numOfDraws));
         }
 
-
-
+        gameNumber++;
+        gameCountLabel.setText("GAME #" + Integer.toString(gameNumber));
+      
         // Optionally, provide an option to start a new game
-
         playAgain();
     }
 
@@ -298,8 +320,6 @@ public class gameScreen {
 
     private void showLine(int type, int number)
     {
-
-
         switch (type)
         {
             case 0: // rows
