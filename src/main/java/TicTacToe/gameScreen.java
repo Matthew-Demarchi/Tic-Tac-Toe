@@ -1,5 +1,7 @@
 package TicTacToe;
 
+import TicTacToe.tempForData.TempForData;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Line;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -18,6 +21,7 @@ import java.util.Random;
 
 import TicTacToe.TicTacToeAI;
 import TicTacToe.sounds.sounds;
+import javafx.util.Duration;
 
 public class gameScreen {
 
@@ -53,6 +57,37 @@ public class gameScreen {
     //Arrays.asList(boardButton1, boardButton2, boardButton3,
     //            boardButton4, boardButton5, boardButton6,
     //            boardButton7, boardButton8, boardButton9)
+    static
+    {
+
+    }
+
+    @FXML
+    Line topRow, middleRow, bottomRow, leftColumn, middleColumn, rightColumn, diagonalTopLeftToBottomRight, diagonalTopRightToBottomLeft;
+    private static ArrayList<Line> lines = new ArrayList<>();
+
+    Line winnerLine = null;
+
+    public void initialize(){
+        buttons.add(boardButton1);
+        buttons.add(boardButton2);
+        buttons.add(boardButton3);
+        buttons.add(boardButton4);
+        buttons.add(boardButton5);
+        buttons.add(boardButton6);
+        buttons.add(boardButton7);
+        buttons.add(boardButton8);
+        buttons.add(boardButton9);
+        lines.add(topRow);
+        lines.add(middleRow);
+        lines.add(bottomRow);
+        lines.add(leftColumn);
+        lines.add(middleColumn);
+        lines.add(rightColumn);
+        lines.add(diagonalTopLeftToBottomRight);
+        lines.add(diagonalTopRightToBottomLeft);
+    }
+
 
 
     public void initialize()
@@ -152,7 +187,7 @@ public class gameScreen {
         Scene scene = new Scene(root);
 
         inGameOptions controller = fxmlLoader.getController();
-        controller.getMainStageAndButtons((Stage)(currentTurnLabel.getScene().getWindow()), buttonsUsed);
+        controller.getMainStageAndButtons((Stage)(currentTurnLabel.getScene().getWindow()), buttons, winnerLine, buttonsUsed, lines);
 
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL); // Set as modal dialog
@@ -168,6 +203,10 @@ public class gameScreen {
                 for (Button button : buttons) {
                     button.setDisable(false);
                 }
+                if (winnerLine != null)
+                {
+                    winnerLine.setVisible(false);
+                }
             }
     }
 
@@ -177,6 +216,7 @@ public class gameScreen {
             if (buttons.get(i * 3).getText().equals(symbol) &&
                 buttons.get(i * 3 + 1).getText().equals(symbol) && 
                 buttons.get(i * 3 + 2).getText().equals(symbol)) {
+                showLine(0, i);
                 return true; // Winning row
             }
         }
@@ -186,6 +226,7 @@ public class gameScreen {
             if (buttons.get(i).getText().equals(symbol) && 
                 buttons.get(i + 3).getText().equals(symbol) && 
                 buttons.get(i + 6).getText().equals(symbol)) {
+                showLine(1, i);
                 return true; // Winning column
             }
         }
@@ -194,11 +235,13 @@ public class gameScreen {
         if (buttons.get(0).getText().equals(symbol) && 
             buttons.get(4).getText().equals(symbol) && 
             buttons.get(8).getText().equals(symbol)) {
+            showLine(2, 0);
             return true; // Winning diagonal
         }
         if (buttons.get(2).getText().equals(symbol) && 
             buttons.get(4).getText().equals(symbol) && 
             buttons.get(6).getText().equals(symbol)) {
+            showLine(2, 1);
             return true; // Winning diagonal
         }
 
@@ -271,9 +314,12 @@ public class gameScreen {
             numOfDraws++;
             numOfDrawsLabel.setText("Draws: " + Integer.toString(numOfDraws));
         }
+
         gameNumber++;
         gameCountLabel.setText("GAME #" + Integer.toString(gameNumber));
+      
         // Optionally, provide an option to start a new game
+        playAgain();
     }
 
     // Method to check if the game is over
@@ -294,6 +340,52 @@ public class gameScreen {
         }
 
         return false;
+    }
+
+
+    private void showLine(int type, int number)
+    {
+
+
+        switch (type)
+        {
+            case 0: // rows
+                winnerLine = lines.get(0 + number);
+                break;
+            case 1:
+                winnerLine = lines.get(3 + number);
+                break;
+            case 2:
+                winnerLine = lines.get(6 + number);
+                break;
+        }
+        winnerLine.setVisible(true);
+        if(buttonsUsed.size() % 2 != 0)
+        {
+            winnerLine.setStyle("-fx-stroke: red; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, red, 3, 0.1, 0, 0);");
+        }
+        else
+        {
+            winnerLine.setStyle("-fx-stroke: lime; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, lime, 3, 0.1, 0, 0);");
+        }
+    }
+
+    // function to prompt the user whether to play again
+    private void playAgain(){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("playAgain.fxml"));
+            Parent root = fxmlLoader.load();
+            playAgain controller = fxmlLoader.getController();
+            controller.getMainStageAndButtons((Stage) currentTurnLabel.getScene().getWindow(), buttons, winnerLine, buttonsUsed, lines); // Set the main stage and buttons
+            Scene scene = new Scene(root);
+            Stage playAgainStage = new Stage();
+            playAgainStage.initModality(Modality.APPLICATION_MODAL); // Set as modal dialog
+            playAgainStage.setScene(scene);
+
+            playAgainStage.show();
+        } catch (IOException exception){
+            exception.printStackTrace();
+        }
     }
 
     }
