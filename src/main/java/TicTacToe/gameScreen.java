@@ -271,7 +271,8 @@ public class gameScreen {
             numOfDraws++;
             numOfDrawsLabel.setText("Draws: " + Integer.toString(numOfDraws));
         }
-        gameCountLabel.setText("GAME #" + Integer.toString(gameNumber++));
+        gameNumber++;
+        gameCountLabel.setText("GAME #" + Integer.toString(gameNumber));
         // Optionally, provide an option to start a new game
     }
 
