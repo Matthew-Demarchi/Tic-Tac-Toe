@@ -55,7 +55,10 @@ public class playAgain {
         buttons.clear();
         lines.clear();
         buttonsUsed.clear();
-        winnerLine.setVisible(false);
+        if (winnerLine != null)
+        {
+            winnerLine.setVisible(false);
+        }
 
     }
 
