@@ -146,7 +146,7 @@ public class gameScreen {
         Scene scene = new Scene(root);
 
         inGameOptions controller = fxmlLoader.getController();
-        controller.getMainStageAndButtons((Stage)(currentTurnLabel.getScene().getWindow()), buttonsUsed);
+        controller.getMainStageAndButtons((Stage)(currentTurnLabel.getScene().getWindow()), buttons, winnerLine, buttonsUsed, lines);
 
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL); // Set as modal dialog
