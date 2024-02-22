@@ -174,7 +174,10 @@ public class inGameOptions {
             buttons.get(i).setDisable(false);
         }
         buttonsUsed.clear();
-        winnerLine.setVisible(false);
+        if (winnerLine != null)
+        {
+            winnerLine.setVisible(false);
 
+        }
     }
 }
