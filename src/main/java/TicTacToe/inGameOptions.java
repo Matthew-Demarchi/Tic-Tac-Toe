@@ -11,6 +11,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import TicTacToe.sounds.sounds;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,6 +21,10 @@ import java.util.ArrayList;
 public class inGameOptions {
     private Stage mainStage;
     private ArrayList<Button> buttons = new ArrayList<Button>();
+
+    private ArrayList<Button> buttonsUsed = new ArrayList<>();
+    private Line winnerLine;
+    private ArrayList<Line> lines = new ArrayList<>();
 
     @FXML
     private ToggleButton sidesOnButton;
@@ -38,11 +43,15 @@ public class inGameOptions {
     @FXML
     Slider soundSlider;
 
-    public void getMainStageAndButtons(Stage mainStage, ArrayList<Button> buttons)
+    public void getMainStageAndButtons(Stage mainStage, ArrayList<Button> buttons, Line winnerLine, ArrayList<Button> buttonsUsed, ArrayList<Line> lines)
     {
         this.mainStage = mainStage;
         this.buttons = buttons;
+        this.winnerLine = winnerLine;
+        this.buttonsUsed = buttonsUsed;
+        this.lines = lines;
     }
+
     private void setToggleButtonColors()
     {
         if (normalButton.isSelected())
@@ -147,6 +156,14 @@ public class inGameOptions {
 
         Stage optionsStage = (Stage) (easyButton.getScene().getWindow());
         optionsStage.close();
+
+        buttons.clear();
+        lines.clear();
+        buttonsUsed.clear();
+        if (winnerLine != null)
+        {
+            winnerLine.setVisible(false);
+        }
     }
 
     public void clearButtonClicked(ActionEvent event){
@@ -156,6 +173,8 @@ public class inGameOptions {
             buttons.get(i).setText("");
             buttons.get(i).setDisable(false);
         }
-        buttons.clear();
+        buttonsUsed.clear();
+        winnerLine.setVisible(false);
+
     }
 }
