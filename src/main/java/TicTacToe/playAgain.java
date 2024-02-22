@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -25,13 +26,19 @@ public class playAgain {
 
     private Stage mainStage;
 
-    private ArrayList<Button> buttons = new ArrayList<Button>();
+    private ArrayList<Button> buttons = new ArrayList<>();
+    private ArrayList<Button> buttonsUsed = new ArrayList<>();
+    private Line winnerLine;
+    private ArrayList<Line> lines = new ArrayList<>();
 
 
-    public void getMainStageAndButtons(Stage mainStage, ArrayList<Button> buttons)
+    public void getMainStageAndButtons(Stage mainStage, ArrayList<Button> buttons, Line winnerLine, ArrayList<Button> buttonsUsed, ArrayList<Line> lines)
     {
         this.mainStage = mainStage;
         this.buttons = buttons;
+        this.winnerLine = winnerLine;
+        this.buttonsUsed = buttonsUsed;
+        this.lines = lines;
     }
 
 
@@ -46,6 +53,9 @@ public class playAgain {
         Stage playAgainStage = (Stage) (noPlayAgain.getScene().getWindow());
         playAgainStage.close();
         buttons.clear();
+        lines.clear();
+        buttonsUsed.clear();
+        winnerLine.setVisible(false);
 
     }
 
@@ -57,7 +67,8 @@ public class playAgain {
             buttons.get(i).setText("");
             buttons.get(i).setDisable(false);
         }
-        buttons.clear();
+        buttonsUsed.clear();
+        winnerLine.setVisible(false);
 
         Stage playAgainStage = (Stage) yesPlayAgain.getScene().getWindow();
         playAgainStage.close(); // Close the playAgain stage
