@@ -86,21 +86,7 @@ public class gameScreen {
         lines.add(rightColumn);
         lines.add(diagonalTopLeftToBottomRight);
         lines.add(diagonalTopRightToBottomLeft);
-    }
 
-
-
-    public void initialize()
-    {
-        buttons.add(boardButton1);
-        buttons.add(boardButton2);
-        buttons.add(boardButton3);
-        buttons.add(boardButton4);
-        buttons.add(boardButton5);
-        buttons.add(boardButton6);
-        buttons.add(boardButton7);
-        buttons.add(boardButton8);
-        buttons.add(boardButton9);
         gameNumber = 1;
         player1Wins = 0;
         player2Wins = 0;
