@@ -55,6 +55,7 @@ public class playAgain {
         buttons.clear();
         lines.clear();
         buttonsUsed.clear();
+        if (winnerLine != null)
         winnerLine.setVisible(false);
 
     }
