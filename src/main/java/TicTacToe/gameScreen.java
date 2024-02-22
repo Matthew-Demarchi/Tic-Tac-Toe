@@ -54,13 +54,6 @@ public class gameScreen {
             boardButton7, boardButton8, boardButton9;
 
     private static ArrayList<Button> buttons = new ArrayList<>();
-    //Arrays.asList(boardButton1, boardButton2, boardButton3,
-    //            boardButton4, boardButton5, boardButton6,
-    //            boardButton7, boardButton8, boardButton9)
-    static
-    {
-
-    }
 
     @FXML
     Line topRow, middleRow, bottomRow, leftColumn, middleColumn, rightColumn, diagonalTopLeftToBottomRight, diagonalTopRightToBottomLeft;
@@ -78,6 +71,7 @@ public class gameScreen {
         buttons.add(boardButton7);
         buttons.add(boardButton8);
         buttons.add(boardButton9);
+
         lines.add(topRow);
         lines.add(middleRow);
         lines.add(bottomRow);
@@ -124,11 +118,6 @@ public class gameScreen {
         if (button.isDisable())
         {
             return;
-        }
-        else if (buttonsUsed.size() % 2 == 0)
-        {
-            button.setText("");
-            button.setStyle("-fx-text-fill: transparent; -fx-font-weight: bold; -fx-background-color: transparent;");
         }
         else
         {
@@ -331,8 +320,6 @@ public class gameScreen {
 
     private void showLine(int type, int number)
     {
-
-
         switch (type)
         {
             case 0: // rows
