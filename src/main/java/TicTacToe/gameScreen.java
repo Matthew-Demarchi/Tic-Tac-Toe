@@ -161,14 +161,19 @@ public class gameScreen {
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
 
+        // load the controller file into inGameOptions controller variable
+        // then pass the gameScreen controller to the inGameOptions controller
+
         inGameOptions controller = fxmlLoader.getController();
-        controller.getMainStageAndButtons((Stage)(currentTurnLabel.getScene().getWindow()), buttons, winnerLine, buttonsUsed, lines);
+        controller.setGameScreenController(this);
+
 
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL); // Set as modal dialog
         stage.setTitle("Options");
         stage.setScene(scene);
         stage.showAndWait();
+
     } catch (IOException e){
                 e.printStackTrace();
             }
@@ -183,6 +188,22 @@ public class gameScreen {
                     winnerLine.setVisible(false);
                 }
             }
+    }
+
+    // signal is passed from the inGameOptions controller
+    // to this gameScreen controller.
+    public void handleOptionsClear(boolean optionsClear){
+
+        if(optionsClear)
+            clearBoard();
+    }
+
+    // signal is passed from the inGameOptions controller
+    // to this gameScreen controller.
+    public void handleOptionsQuit(boolean optionsQuit) throws IOException {
+
+        if(optionsQuit)
+            quitGame();
     }
 
     private boolean checkWin(ArrayList<Button> buttons2, String symbol) {
@@ -344,14 +365,26 @@ public class gameScreen {
     }
 
     // function to prompt the user whether to play again
+    // Passes the gameScreen controller to the playAgain controller,
+    // which sends a signal back to gameScreen controller
+
     private void playAgain(){
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("playAgain.fxml"));
             Parent root = fxmlLoader.load();
+
             playAgain controller = fxmlLoader.getController();
-            controller.getMainStageAndButtons((Stage) currentTurnLabel.getScene().getWindow(), buttons, winnerLine, buttonsUsed, lines); // Set the main stage and buttons
+            controller.setGameScreenController(this); // pass gameScreen controller to playAgain controller
+
             Scene scene = new Scene(root);
             Stage playAgainStage = new Stage();
+
+            playAgainStage.setMaxWidth(300);
+            playAgainStage.setMaxHeight(200);
+
+            playAgainStage.setMinWidth(300);
+            playAgainStage.setMinHeight(200);
+
             playAgainStage.initModality(Modality.APPLICATION_MODAL); // Set as modal dialog
             playAgainStage.setScene(scene);
 
@@ -360,5 +393,51 @@ public class gameScreen {
             exception.printStackTrace();
         }
     }
+
+
+    public void handlePlayAgain(boolean playAgain) throws IOException {
+        if (playAgain) {
+
+            clearBoard();
+
+
+        } else {
+
+            quitGame();
+        }
+    }
+
+    // simple function to clear board and reset state
+    private void clearBoard(){
+
+        for (Button button : buttons) {
+            button.setText("");
+            button.setDisable(false);
+        }
+        buttonsUsed.clear();
+
+        if (winnerLine != null) {
+            winnerLine.setVisible(false);
+            winnerLine = null;
+        }
+
+    }
+
+    // simple function to quit game and return to main menu
+
+    private void quitGame() throws IOException {
+
+        buttonsUsed.clear();
+        buttons.clear();
+        lines.clear();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TicTacMainMenu2.fxml"));
+        Parent root = fxmlLoader.load();
+        Scene scene = new Scene(root);
+
+        Stage primaryStage = (Stage) currentTurnLabel.getScene().getWindow();
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
 
     }
