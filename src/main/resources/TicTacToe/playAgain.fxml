@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="150.0" minWidth="300.0" prefHeight="101.0" prefWidth="172.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TicTacToe.playAgain">
+<AnchorPane maxHeight="150.0" maxWidth="300.0" minHeight="150.0" minWidth="300.0" prefHeight="101.0" prefWidth="172.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TicTacToe.playAgain">
    <children>
       <Label layoutX="112.0" layoutY="42.0" prefHeight="26.0" prefWidth="83.0" text="Play Again?">
          <font>
