@@ -22,6 +22,7 @@ import java.util.Random;
 import TicTacToe.TicTacToeAI;
 import TicTacToe.sounds.sounds;
 import javafx.util.Duration;
+import TicTacToe.TicTacToeAI;
 
 public class gameScreen {
 
@@ -138,6 +139,8 @@ public class gameScreen {
             button.setDisable(true);
             buttonsUsed.add(button);
             currentTurnLabel.setText("Current Turn: O");
+            System.out.println(TicTacToeAI.findBestMoveIndex(buttons, 9));
+
             
             // Check for player win or draw
             if (checkWin(null, "X")) {
@@ -252,7 +255,6 @@ public class gameScreen {
                 randomButton.setStyle("-fx-text-fill: lime; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, lime, 3, 0.1, 0, 0);");
                 randomButton.setDisable(true);
                 buttonsUsed.add(randomButton);
-
                 isGameOver();
             }
         }
@@ -360,5 +362,4 @@ public class gameScreen {
             exception.printStackTrace();
         }
     }
-
     }
