@@ -1,7 +1,5 @@
 package TicTacToe;
 
-import TicTacToe.tempForData.TempForData;
-import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,14 +14,19 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
-import TicTacToe.TicTacToeAI;
+
 import TicTacToe.sounds.sounds;
-import javafx.util.Duration;
+import TicTacToe.tempForData.TempForData;
+
 
 public class gameScreen {
+
+    String ai;
+    String human;
+    String aiStyle[] = new String[3];
+    String humanStyle[] = new String[3];
 
     int gameNumber;
     int player1Wins; //letter x
@@ -61,7 +64,7 @@ public class gameScreen {
 
     Line winnerLine = null;
 
-    public void initialize(){
+    public void initialize() {
         buttons.add(boardButton1);
         buttons.add(boardButton2);
         buttons.add(boardButton3);
@@ -91,6 +94,14 @@ public class gameScreen {
         player2WinsLabel.setText("Player 2: " + Integer.toString(player2Wins));
         numOfDrawsLabel.setText("Draws: " + Integer.toString(numOfDraws));
         //System.out.print(buttons.size());
+        ai = "O";
+        human = "X";
+        humanStyle[0] = "-fx-text-fill: red; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, red, 3, 0.1, 0, 0);";
+        humanStyle[1] = "-fx-text-fill: red; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 0.35;";
+        humanStyle[2] = "-fx-stroke: red; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, red, 3, 0.1, 0, 0);";
+        aiStyle[0] = "-fx-text-fill: lime; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, lime, 3, 0.1, 0, 0);";
+        aiStyle[1] = "-fx-text-fill: lime; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 0.35;";
+        aiStyle[2] = "-fx-stroke: lime; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, lime, 3, 0.1, 0, 0);";
     }
 
     @FXML
@@ -99,15 +110,25 @@ public class gameScreen {
 
         Button button = (Button) event.getSource();
 
-        if (buttonsUsed.size() % 2 == 0)
+        int temp;
+        if (human.equals("X"))
         {
-            button.setText("X");
-            button.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 0.35;");
+            temp = 2;
         }
         else
         {
-            button.setText("O");
-            button.setStyle("-fx-text-fill: lime; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 0.35;");
+            temp = 1;
+        }
+
+        if (buttonsUsed.size() % temp == 0)
+        {
+            button.setText(human);
+            button.setStyle(humanStyle[1]);
+        }
+        else
+        {
+            button.setText(ai);
+            button.setStyle(aiStyle[1]);
         }
     }
 
@@ -133,23 +154,24 @@ public class gameScreen {
         Button button = (Button) event.getSource();
         if (!button.isDisable()) {
             // Set player's move
-            button.setText("X");
-            button.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, red, 3, 0.1, 0, 0);"); //
+            button.setText(human);
+            button.setStyle(humanStyle[0]); //
             button.setDisable(true);
             buttonsUsed.add(button);
-            currentTurnLabel.setText("Current Turn: O");
-            
+            currentTurnLabel.setText("Current Turn: " + ai);
+
+
             // Check for player win or draw
-            if (checkWin(null, "X")) {
-                gameOver("X");
+            if (checkWin(null, human)) {
+                gameOver(human);
             } else if (isBoardFull(null)) {
                 gameOver("draw");
             } else {
                 // Trigger AI move
-                currentTurnLabel.setText("Current Turn: X");
+                currentTurnLabel.setText("Current Turn: " + human);
                 makeAIMove();
             }
-        }   
+        }
     }
 
     @FXML
@@ -179,7 +201,7 @@ public class gameScreen {
             }
             if (buttonsUsed.size() == 0)
             {
-                currentTurnLabel.setText("Current Turn: X");
+                currentTurnLabel.setText("Current Turn: " + human);
                 for (Button button : buttons) {
                     button.setDisable(false);
                 }
@@ -210,7 +232,7 @@ public class gameScreen {
         // Check rows
         for (int i = 0; i < 3; i++) {
             if (buttons.get(i * 3).getText().equals(symbol) &&
-                buttons.get(i * 3 + 1).getText().equals(symbol) && 
+                buttons.get(i * 3 + 1).getText().equals(symbol) &&
                 buttons.get(i * 3 + 2).getText().equals(symbol)) {
                 showLine(0, i);
                 return true; // Winning row
@@ -219,8 +241,8 @@ public class gameScreen {
 
         // Check columns
         for (int i = 0; i < 3; i++) {
-            if (buttons.get(i).getText().equals(symbol) && 
-                buttons.get(i + 3).getText().equals(symbol) && 
+            if (buttons.get(i).getText().equals(symbol) &&
+                buttons.get(i + 3).getText().equals(symbol) &&
                 buttons.get(i + 6).getText().equals(symbol)) {
                 showLine(1, i);
                 return true; // Winning column
@@ -228,14 +250,14 @@ public class gameScreen {
         }
 
         // Check diagonals
-        if (buttons.get(0).getText().equals(symbol) && 
-            buttons.get(4).getText().equals(symbol) && 
+        if (buttons.get(0).getText().equals(symbol) &&
+            buttons.get(4).getText().equals(symbol) &&
             buttons.get(8).getText().equals(symbol)) {
             showLine(2, 0);
             return true; // Winning diagonal
         }
-        if (buttons.get(2).getText().equals(symbol) && 
-            buttons.get(4).getText().equals(symbol) && 
+        if (buttons.get(2).getText().equals(symbol) &&
+            buttons.get(4).getText().equals(symbol) &&
             buttons.get(6).getText().equals(symbol)) {
             showLine(2, 1);
             return true; // Winning diagonal
@@ -256,26 +278,45 @@ public class gameScreen {
         // Method to make a move for the AI player
         private void makeAIMove() {
             ArrayList<Button> emptyCells = new ArrayList<>();
-
-            // Find all empty cells
             for (Button button : buttons) {
                 if (button.getText().isEmpty()) {
                     emptyCells.add(button);
                 }
             }
 
-            // If there are empty cells, choose a random one and make the move
-            if (!emptyCells.isEmpty()) {
-                Random random = new Random();
-                int randomIndex = random.nextInt(emptyCells.size());
-                Button randomButton = emptyCells.get(randomIndex);
-                randomButton.setText("O"); // Assuming AI plays with 'O'
-                randomButton.setStyle("-fx-text-fill: lime; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, lime, 3, 0.1, 0, 0);");
-                randomButton.setDisable(true);
-                buttonsUsed.add(randomButton);
 
-                isGameOver();
+            int bestScore = Integer.MIN_VALUE;
+            int bestMove = 0;
+            if (TempForData.normalButton) {
+                for (int i = 0; i < buttons.size(); i++) {
+                    if (buttons.get(i).getText().equals("")) {
+                        buttons.get(i).setText(ai); // Assuming AI plays with 'O'
+                        int score = TicTacToeAI.minimax(buttons, emptyCells.size(), false, ai, human, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                        buttons.get(i).setText("");
+                        if (score > bestScore) {
+                            bestScore = score;
+                            bestMove = i;
+                        }
+                    }
+
+                }
+                buttons.get(bestMove).setText(ai);
+                buttons.get(bestMove).setStyle(aiStyle[0]);
+                buttons.get(bestMove).setDisable(true);
+                buttonsUsed.add(buttons.get(bestMove));
             }
+            else {
+                if (!emptyCells.isEmpty()) {
+                    Random random = new Random();
+                    int randomIndex = random.nextInt(emptyCells.size());
+                    Button randomButton = emptyCells.get(randomIndex);
+                    randomButton.setText(ai); // Assuming AI plays with 'O'
+                    randomButton.setStyle(aiStyle[0]);
+                    randomButton.setDisable(true);
+                    buttonsUsed.add(randomButton);
+                }
+            }
+            isGameOver();
         }
 
 
@@ -294,12 +335,12 @@ public class gameScreen {
         }
 
         // Update statistics
-        if (winner.equals("X")) {
+        if (winner.equals(human)) {
             // Player 1 wins
             // Update player 1's win count
             player1Wins++;
             player1WinsLabel.setText("Player 1: " + Integer.toString(player1Wins));
-        } else if (winner.equals("O")) {
+        } else if (winner.equals(ai)) {
             // Player 2 wins (AI)
             // Update player 2's win count
             player2Wins++;
@@ -313,7 +354,7 @@ public class gameScreen {
 
         gameNumber++;
         gameCountLabel.setText("GAME #" + Integer.toString(gameNumber));
-      
+
         // Optionally, provide an option to start a new game
         playAgain();
     }
@@ -321,11 +362,11 @@ public class gameScreen {
     // Method to check if the game is over
     private boolean isGameOver() {
         // Check for win
-        if (checkWin(buttons, "X")) {
-            gameOver("X");
+        if (checkWin(buttons, human)) {
+            gameOver(human);
             return true;
-        } else if (checkWin(buttons, "O")) {
-            gameOver("O");
+        } else if (checkWin(buttons, ai)) {
+            gameOver(ai);
             return true;
         }
 
@@ -354,13 +395,24 @@ public class gameScreen {
                 break;
         }
         winnerLine.setVisible(true);
-        if(buttonsUsed.size() % 2 != 0)
+
+        int temp;
+        if (human.equals("X"))
         {
-            winnerLine.setStyle("-fx-stroke: red; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, red, 3, 0.1, 0, 0);");
+            temp = 2;
         }
         else
         {
-            winnerLine.setStyle("-fx-stroke: lime; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, lime, 3, 0.1, 0, 0);");
+            temp = 1;
+        }
+
+        if(buttonsUsed.size() % temp != 0)
+        {
+            winnerLine.setStyle(humanStyle[2]);
+        }
+        else
+        {
+            winnerLine.setStyle(aiStyle[2]);
         }
     }
 
@@ -388,17 +440,36 @@ public class gameScreen {
             playAgainStage.initModality(Modality.APPLICATION_MODAL); // Set as modal dialog
             playAgainStage.setScene(scene);
 
-            playAgainStage.show();
+            playAgainStage.showAndWait();
         } catch (IOException exception){
             exception.printStackTrace();
         }
     }
 
 
+
     public void handlePlayAgain(boolean playAgain) throws IOException {
         if (playAgain) {
 
             clearBoard();
+            if (TempForData.sidesOnButton)
+            {
+                String temp;
+                temp = human;
+                human = ai;
+                ai = temp;
+
+                for (int i = 0; i < 3; i++)
+                {
+                    temp = humanStyle[i];
+                    humanStyle[i] = aiStyle[i];
+                    aiStyle[i] = temp;
+                }
+            }
+            if (human.equals("O"))
+            {
+                makeAIMove();
+            }
 
 
         } else {
@@ -441,3 +512,4 @@ public class gameScreen {
 
 
     }
+
