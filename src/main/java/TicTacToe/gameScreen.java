@@ -291,7 +291,7 @@ public class gameScreen {
                 for (int i = 0; i < buttons.size(); i++) {
                     if (buttons.get(i).getText().equals("")) {
                         buttons.get(i).setText(ai); // Assuming AI plays with 'O'
-                        int score = TicTacToeAI.minimax(buttons, emptyCells.size(), false, ai, human);
+                        int score = TicTacToeAI.minimax(buttons, emptyCells.size(), false, ai, human, Integer.MIN_VALUE, Integer.MAX_VALUE);
                         buttons.get(i).setText("");
                         if (score > bestScore) {
                             bestScore = score;

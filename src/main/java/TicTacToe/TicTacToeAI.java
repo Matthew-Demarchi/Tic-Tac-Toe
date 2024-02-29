@@ -11,7 +11,7 @@ public class TicTacToeAI
 {
 
 
-    public static int minimax(ArrayList<Button> buttons, int depth, boolean maximizingPlayer, String ai, String human) {
+    public static int minimax(ArrayList<Button> buttons, int depth, boolean maximizingPlayer, String ai, String human, int alpha, int beta) {
         int result = checkWinner(buttons, ai, human);
         if (depth == 0 || result != -2)
         {
@@ -19,32 +19,42 @@ public class TicTacToeAI
         }
         if (maximizingPlayer)
         {
-            int bestScore = Integer.MIN_VALUE;
+            int bestEvaluation = Integer.MIN_VALUE;
             for (int i = 0; i < buttons.size(); i++) {
                 if (buttons.get(i).getText().equals(""))
                 {
                     buttons.get(i).setText(ai);
-                    int score = minimax(buttons, depth-1, false, ai, human);
+                    int evaluation = minimax(buttons, depth-1, false, ai, human, alpha, beta);
                     buttons.get(i).setText("");
 
-                    bestScore = Math.max(score, bestScore);
+                    bestEvaluation = Math.max(evaluation, bestEvaluation);
+                    alpha = Math.max(alpha, evaluation);
+                    if (beta <= alpha)
+                    {
+                        break;
+                    }
                 }
             }
-            return bestScore;
+            return bestEvaluation;
         }
         else
         {
-            int bestScore = Integer.MAX_VALUE;
+            int bestEvaluation = Integer.MAX_VALUE;
             for (int i = 0; i < buttons.size(); i++) {
                 if (buttons.get(i).getText().equals(""))
                 {
                     buttons.get(i).setText(human);
-                    int score = minimax(buttons, depth-1, true, ai, human);
+                    int evaluation = minimax(buttons, depth-1, true, ai, human, alpha, beta);
                     buttons.get(i).setText("");
-                    bestScore = Math.min(score, bestScore);
+                    bestEvaluation = Math.min(evaluation, bestEvaluation);
+                    beta = Math.min(beta, evaluation);
+                    if (beta <= alpha)
+                    {
+                        break;
+                    }
                 }
             }
-            return bestScore;
+            return bestEvaluation;
         }
 
     }
