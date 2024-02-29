@@ -1,167 +1,3 @@
-package TicTacToe;
-
-import java.util.ArrayList;
-import java.util.Random;
-
-import javafx.scene.control.Button;
-
-
-public class TicTacToeAI {
-
-    public static int evaluation (ArrayList<Button> buttons)
-    {
-        int score = 0;
-        int temp = 0;
-
-        for (int i = 1; i < 4; i++)
-        {
-            for (int j = 1; j < 4; j++)
-            {
-                if (buttons.get((j + (i - 1) * 3) - 1).getText() == "X")
-                {
-                    temp -= 1;
-                }
-                else if (buttons.get((j + (i - 1) * 3) - 1).getText() == "O")
-                {
-                    temp += 1;
-                }
-                else
-                {
-                    temp += 0;
-                }
-            }
-            if (temp == 3)
-            {
-                score = 10;
-                return score;
-            }
-            else if (temp == -3)
-            {
-                score = -10;
-                return score;
-            }
-            else
-            {
-                score += temp;
-            }
-            temp = 0;
-        }
-
-        for (int j = 0; j < 3; j++) {
-            for (int i = 0; i < 3; i++) {
-                if (buttons.get(i * 3 + j).getText() == "X") {
-                    temp -= 1;
-                } else if (buttons.get(i * 3 + j).getText() == "O") {
-                    temp += 1;
-                }
-            }
-            if (temp == 3) {
-                score = 10;
-                return score;
-            } else if (temp == -3) {
-                score = -10;
-                return score;
-            } else {
-                score += temp;
-            }
-            temp = 0;
-        }
-
-
-        for (int i = 0; i < 3; i++) {
-            if (buttons.get(i * 3 + i).getText() == "X") {
-                temp -= 1;
-            } else if (buttons.get(i * 3 + i).getText() == "O") {
-                temp += 1;
-            }
-        }
-        if (temp == 3) {
-            score = 10;
-            return score;
-
-        } else if (temp == -3) {
-            score = -10;
-            return score;
-
-        } else {
-            score += temp;
-        }
-
-        temp = 0;
-
-        for (int i = 0; i < 3; i++) {
-            if (buttons.get(i * 3 + (2 - i)).getText() == "X") {
-                temp -= 1;
-            } else if (buttons.get(i * 3 + (2 - i)).getText() == "O") {
-                temp += 1;
-            }
-        }
-        if (temp == 3) {
-            score = 10;
-            return score;
-
-        } else if (temp == -3) {
-            score = -10;
-            return score;
-
-        } else {
-            score += temp;
-        }
-        temp = 0;
-
-        return score;
-    }
-
-    public static int[] minimax(ArrayList<Button> buttons, int depth, int alpha, int beta, boolean maximizingPlayer) {
-        if (depth == 0 || evaluation(buttons) == 10 || evaluation(buttons) == -10) {
-            return new int[]{evaluation(buttons), -1}; // Return evaluation score and no move
-        }
-
-        int bestMove = -1;
-        int bestScore = maximizingPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE;
-
-        for (int i = 0; i < buttons.size(); i++) {
-            if (buttons.get(i).getText().isEmpty()) {
-                String currentPlayer = maximizingPlayer ? "O" : "X";
-                buttons.get(i).setText(currentPlayer); // Make a hypothetical move
-                int[] eval = minimax(buttons, depth - 1, alpha, beta, !maximizingPlayer);
-                buttons.get(i).setText(""); // Undo the move
-
-                if (maximizingPlayer) {
-                    if (eval[0] > bestScore) {
-                        bestScore = eval[0];
-                        bestMove = i;
-                    }
-                    alpha = Math.max(alpha, bestScore);
-                } else {
-                    if (eval[0] < bestScore) {
-                        bestScore = eval[0];
-                        bestMove = i;
-                    }
-                    beta = Math.min(beta, bestScore);
-                }
-
-                if (beta <= alpha) {
-                    break; // Alpha-beta pruning
-                }
-            }
-        }
-        return new int[]{bestScore, bestMove}; // Return evaluation score and selected move
-    }
-    public static int findBestMoveIndex(ArrayList<Button> buttons, int depth) {
-        int[] result = minimax(buttons, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
-        return result[1]; // Return the index of the best move
-    }
-
-}
-
-
-
-
-
-//
-
-/*
 
 package TicTacToe;
 
@@ -174,150 +10,172 @@ import javafx.scene.control.Button;
 public class TicTacToeAI
 {
 
-    int evaluation (ArrayList<Button> buttons)
-    {
-        int score = 0;
-        int temp = 0;
 
-        for (int i = 1; i < 4; i++)
+    public static int minimax(ArrayList<Button> buttons, int depth, boolean maximizingPlayer) {
+        int result = checkWinner(buttons);
+        if (depth == 0 || result != -2)
         {
-            for (int j = 1; j < 4; j++)
-            {
-                if (buttons.get((j + (i - 1) * 3) - 1).getText() == "X")
+            return result;
+        }
+        if (maximizingPlayer)
+        {
+            int bestScore = Integer.MIN_VALUE;
+            for (int i = 0; i < buttons.size(); i++) {
+                if (buttons.get(i).getText().equals(""))
                 {
-                    temp -= 1;
+                    buttons.get(i).setText("O");
+                    int score = minimax(buttons, depth-1, false);
+                    buttons.get(i).setText("");
+
+                    bestScore = Math.max(score, bestScore);
                 }
-                else if (buttons.get((j + (i - 1) * 3) - 1).getText() == "O")
+            }
+            return bestScore;
+        }
+        else
+        {
+            int bestScore = Integer.MAX_VALUE;
+            for (int i = 0; i < buttons.size(); i++) {
+                if (buttons.get(i).getText().equals(""))
                 {
-                    temp += 1;
+                    buttons.get(i).setText("X");
+                    int score = minimax(buttons, depth-1, true);
+                    buttons.get(i).setText("");
+                    bestScore = Math.min(score, bestScore);
                 }
-                else
-                {
-                    temp += 0;
-                }
             }
-            if (temp == 3)
-            {
-                score = 10;
-                return score;
-            }
-            else if (temp == -3)
-            {
-                score = -10;
-                return score;
-            }
-            else
-            {
-                score += temp;
-            }
-            temp = 0;
+            return bestScore;
         }
 
-        for (int j = 0; j < 3; j++) {
+    }
+
+//    private static int checkWinner(ArrayList<Button> buttons)
+//    {
+//
+//        String[][] board = new String[3][3];
+//        board[0][0] = buttons.get(0).getText();
+//        board[1][0] = buttons.get(1).getText();
+//        board[2][0] = buttons.get(2).getText();
+//        board[0][1] = buttons.get(3).getText();
+//        board[1][1] = buttons.get(4).getText();
+//        board[2][1] = buttons.get(5).getText();
+//        board[0][2] = buttons.get(6).getText();
+//        board[1][2] = buttons.get(7).getText();
+//        board[2][2] = buttons.get(8).getText();
+//
+//        String winner = null;
+//
+//        //hor
+//        for (int i = 0; i < 3; i++)
+//        {
+//            if (equals3(board[i][0],board[i][1],board[i][2]))
+//            {
+//                winner = board[i][0];
+//            }
+//        }
+//
+//        for (int i = 0; i < 3; i++)
+//        {
+//            if (equals3(board[0][i],board[1][i],board[2][i]))
+//            {
+//                winner = board[0][i];
+//            }
+//        }
+//
+//        if (equals3(board[0][0], board[1][1], board[2][2])) {
+//            winner = board[0][0];
+//        }
+//
+//        if (equals3(board[2][0], board[1][1], board[0][2])) {
+//            winner = board[2][0];
+//        }
+//
+//        int openSpots = 0;
+//        for (int i = 0; i < 3; i++) {
+//            for (int j = 0; j < 3; j++) {
+//                if (board[i][j].equals("")) {
+//                    openSpots++;
+//                }
+//            }
+//        }
+//
+//        if (winner == null && openSpots == 0) {
+//            return 0;
+//        } else if (winner == null)
+//        {
+//            return -2;
+//        }
+//        else{
+//            if (winner.equals("X"))
+//            {
+//                return -1;
+//            }
+//            else
+//            {
+//                return 1;
+//            }
+//        }
+//    }
+//
+//
+//    private static boolean equals3(String a, String b, String c)
+//    {
+//        return a.equals(b) && b.equals(c) && !a.equals("");
+//    }
+
+    private static int checkWinner(ArrayList<Button> buttons) {
+        int result = -1;
+        String symbol = "X";
+
+        for (int k = 0; k < 2; k++)
+        {
             for (int i = 0; i < 3; i++) {
-                if (buttons.get(i * 3 + j).getText() == "X") {
-                    temp -= 1;
-                } else if (buttons.get(i * 3 + j).getText() == "O") {
-                    temp += 1;
+                if (buttons.get(i * 3).getText().equals(symbol) &&
+                        buttons.get(i * 3 + 1).getText().equals(symbol) &&
+                        buttons.get(i * 3 + 2).getText().equals(symbol)) {
+                    return result; // Winning row
                 }
             }
-            if (temp == 3) {
-                score = 10;
-                return score;
-            } else if (temp == -3) {
-                score = -10;
-                return score;
-            } else {
-                score += temp;
+
+            // Check columns
+            for (int i = 0; i < 3; i++) {
+                if (buttons.get(i).getText().equals(symbol) &&
+                        buttons.get(i + 3).getText().equals(symbol) &&
+                        buttons.get(i + 6).getText().equals(symbol)) {
+                    return result; // Winning column
+                }
             }
-            temp = 0;
-        }
 
-
-        for (int i = 0; i < 3; i++) {
-            if (buttons.get(i * 3 + i).getText() == "X") {
-                temp -= 1;
-            } else if (buttons.get(i * 3 + i).getText() == "O") {
-                temp += 1;
+            // Check diagonals
+            if (buttons.get(0).getText().equals(symbol) &&
+                    buttons.get(4).getText().equals(symbol) &&
+                    buttons.get(8).getText().equals(symbol)) {
+                return result; // Winning diagonal
             }
+            if (buttons.get(2).getText().equals(symbol) &&
+                    buttons.get(4).getText().equals(symbol) &&
+                    buttons.get(6).getText().equals(symbol)) {
+                return result; // Winning diagonal
+            }
+            result = 1;
+            symbol = "O";
         }
-        if (temp == 3) {
-            score = 10;
-            return score;
+        // Check rows
 
-        } else if (temp == -3) {
-            score = -10;
-            return score;
-
-        } else {
-            score += temp;
-        }
-
-        temp = 0;
-
-        for (int i = 0; i < 3; i++) {
-            if (buttons.get(i * 3 + (2 - i)).getText() == "X") {
-                temp -= 1;
-            } else if (buttons.get(i * 3 + (2 - i)).getText() == "O") {
-                temp += 1;
+        int buttonNumber = 0;
+        for (int i = 0; i < 9; i++)
+        {
+            if (!buttons.get(i).getText().equals(""))
+            {
+                buttonNumber++;
             }
         }
-        if (temp == 3) {
-            score = 10;
-            return score;
-
-        } else if (temp == -3) {
-            score = -10;
-            return score;
-
-        } else {
-            score += temp;
+        if (buttonNumber == 9)
+        {
+            return 0;
         }
-        temp = 0;
 
-        return score;
+        return -2; // No winning combination found and not a tie
     }
-
-
-    int minimax(ArrayList<Button> buttons, int depth, int alpha, int beta, boolean maximizingPlayer) {
-        if (depth == 0 || evaluation(buttons) == 10 || evaluation(buttons) == -10) {
-            return evaluation(buttons);
-        }
-
-        if (maximizingPlayer) {
-            int maxEval = Integer.MIN_VALUE;
-            for (Button button : buttons) {
-                if (button.getText().isEmpty()) {
-                    button.setText("O"); // Make a hypothetical move for player O
-                    int eval = minimax(buttons, depth - 1, alpha, beta, false);
-                    maxEval = Math.max(maxEval, eval);
-                    alpha = Math.max(alpha, eval);
-                    button.setText(""); // Undo the move
-                    if (beta <= alpha) {
-                        break;
-                    }
-                }
-            }
-            return maxEval;
-        } else {
-            int minEval = Integer.MAX_VALUE;
-            for (Button button : buttons) {
-                if (button.getText().isEmpty()) {
-                    button.setText("X"); // Make a hypothetical move for player X
-                    int eval = minimax(buttons, depth - 1, alpha, beta, true);
-                    minEval = Math.min(minEval, eval);
-                    beta = Math.min(beta, eval);
-                    button.setText(""); // Undo the move
-                    if (beta <= alpha) {
-                        break;
-                    }
-                }
-            }
-            return minEval;
-        }
-    }
-
 
 }
-
- */

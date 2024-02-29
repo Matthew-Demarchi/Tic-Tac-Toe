@@ -1,7 +1,5 @@
 package TicTacToe;
 
-import TicTacToe.tempForData.TempForData;
-import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,16 +14,15 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
 
-import TicTacToe.TicTacToeAI;
+
 import TicTacToe.sounds.sounds;
-import javafx.util.Duration;
-import TicTacToe.TicTacToeAI;
+import TicTacToe.tempForData.TempForData;
+
 
 public class gameScreen {
 
+    char goingFirst;
     int gameNumber;
     int player1Wins; //letter x
     int player2Wins; //letter o
@@ -139,7 +136,6 @@ public class gameScreen {
             button.setDisable(true);
             buttonsUsed.add(button);
             currentTurnLabel.setText("Current Turn: O");
-            System.out.println(TicTacToeAI.findBestMoveIndex(buttons, 9));
 
             
             // Check for player win or draw
@@ -237,27 +233,40 @@ public class gameScreen {
 
         // Method to make a move for the AI player
         private void makeAIMove() {
-            ArrayList<Button> emptyCells = new ArrayList<>();
-
-            // Find all empty cells
+            int blank = 0;
             for (Button button : buttons) {
                 if (button.getText().isEmpty()) {
-                    emptyCells.add(button);
+                    blank++;
                 }
             }
 
-            // If there are empty cells, choose a random one and make the move
-            if (!emptyCells.isEmpty()) {
-                Random random = new Random();
-                int randomIndex = random.nextInt(emptyCells.size());
-                Button randomButton = emptyCells.get(randomIndex);
+            int bestScore = Integer.MIN_VALUE;
+            int bestMove = 0;
+            for (int i = 0; i < buttons.size(); i++)
+            {
+                if (buttons.get(i).getText().equals(""))
+                {
+                    buttons.get(i).setText("O"); // Assuming AI plays with 'O'
+                    int score = TicTacToeAI.minimax(buttons, blank, false);
+                    System.out.println(score);
+                    buttons.get(i).setText("");
+                    if (score > bestScore)
+                    {
+                        bestScore = score;
+                        bestMove = i;
+                    }
+                }
+
+            }
+
+                Button randomButton = buttons.get(bestMove);
                 randomButton.setText("O"); // Assuming AI plays with 'O'
                 randomButton.setStyle("-fx-text-fill: lime; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, lime, 3, 0.1, 0, 0);");
                 randomButton.setDisable(true);
                 buttonsUsed.add(randomButton);
                 isGameOver();
             }
-        }
+
 
 
     // Method to handle game over
@@ -357,9 +366,10 @@ public class gameScreen {
             playAgainStage.initModality(Modality.APPLICATION_MODAL); // Set as modal dialog
             playAgainStage.setScene(scene);
 
-            playAgainStage.show();
+            playAgainStage.showAndWait();
         } catch (IOException exception){
             exception.printStackTrace();
         }
     }
-    }
+
+}
