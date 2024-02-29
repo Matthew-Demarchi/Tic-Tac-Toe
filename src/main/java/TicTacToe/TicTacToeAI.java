@@ -1,17 +1,72 @@
 
 package TicTacToe;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import TicTacToe.tempForData.TempForData;
 import javafx.scene.control.Button;
 
 
-public class TicTacToeAI
-{
+public class TicTacToeAI {
+
+    public static int TicTacToeAI(boolean easy, ArrayList<Button> buttons, String ai, String human) {
+        //getting the number of empty cells
+        int numOfEmptyCells = 0;
+        for (Button button : buttons) {
+            if (button.getText().isEmpty()) {
+                numOfEmptyCells++;
+            }
+        }
+
+        //calling a smart or dumb ai
+        if (!easy) {
+            return smartAI(buttons, ai, human, numOfEmptyCells);
+        } else {
+            return dumbAI(buttons, numOfEmptyCells);
+        }
+    }
 
 
-    public static int minimax(ArrayList<Button> buttons, int depth, boolean maximizingPlayer, String ai, String human, int alpha, int beta) {
+    private static int smartAI(ArrayList<Button> buttons, String ai, String human, int numOfEmptyCells) {
+        int bestScore = Integer.MIN_VALUE;
+        int bestMove = 0;
+        if (TempForData.normalButton) {
+            for (int i = 0; i < buttons.size(); i++) {
+                if (buttons.get(i).getText().equals("")) {
+                    buttons.get(i).setText(ai); // Assuming AI plays with 'O'
+                    int score = TicTacToeAI.minimax(buttons, numOfEmptyCells, false, ai, human, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                    buttons.get(i).setText("");
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestMove = i;
+                    }
+                }
+            }
+        }
+        return bestMove;
+    }
+
+    private static int dumbAI(ArrayList<Button> buttons, int numOfEmptyCells)
+    {
+        int[] moves = new int[numOfEmptyCells];
+        int j = 0;
+        for (int i = 0; i < buttons.size(); i++)
+        {
+            if (buttons.get(i).getText().equals(""))
+            {
+                moves[j] = i;
+                j++;
+            }
+        }
+        Random random = new Random();
+        int randomIndex = random.nextInt(numOfEmptyCells);
+        return moves[randomIndex];
+    }
+
+    private static int minimax(ArrayList<Button> buttons, int depth, boolean maximizingPlayer, String ai, String human, int alpha, int beta) {
         int result = checkWinner(buttons, ai, human);
         if (depth == 0 || result != -2)
         {
