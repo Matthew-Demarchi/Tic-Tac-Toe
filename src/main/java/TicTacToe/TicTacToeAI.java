@@ -11,8 +11,8 @@ public class TicTacToeAI
 {
 
 
-    public static int minimax(ArrayList<Button> buttons, int depth, boolean maximizingPlayer) {
-        int result = checkWinner(buttons);
+    public static int minimax(ArrayList<Button> buttons, int depth, boolean maximizingPlayer, String ai, String human) {
+        int result = checkWinner(buttons, ai, human);
         if (depth == 0 || result != -2)
         {
             return result;
@@ -23,8 +23,8 @@ public class TicTacToeAI
             for (int i = 0; i < buttons.size(); i++) {
                 if (buttons.get(i).getText().equals(""))
                 {
-                    buttons.get(i).setText("O");
-                    int score = minimax(buttons, depth-1, false);
+                    buttons.get(i).setText(ai);
+                    int score = minimax(buttons, depth-1, false, ai, human);
                     buttons.get(i).setText("");
 
                     bestScore = Math.max(score, bestScore);
@@ -38,8 +38,8 @@ public class TicTacToeAI
             for (int i = 0; i < buttons.size(); i++) {
                 if (buttons.get(i).getText().equals(""))
                 {
-                    buttons.get(i).setText("X");
-                    int score = minimax(buttons, depth-1, true);
+                    buttons.get(i).setText(human);
+                    int score = minimax(buttons, depth-1, true, ai, human);
                     buttons.get(i).setText("");
                     bestScore = Math.min(score, bestScore);
                 }
@@ -123,9 +123,9 @@ public class TicTacToeAI
 //        return a.equals(b) && b.equals(c) && !a.equals("");
 //    }
 
-    private static int checkWinner(ArrayList<Button> buttons) {
+    private static int checkWinner(ArrayList<Button> buttons, String ai, String human) {
         int result = -1;
-        String symbol = "X";
+        String symbol = human;
 
         for (int k = 0; k < 2; k++)
         {
@@ -158,7 +158,7 @@ public class TicTacToeAI
                 return result; // Winning diagonal
             }
             result = 1;
-            symbol = "O";
+            symbol = ai;
         }
         // Check rows
 
