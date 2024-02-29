@@ -25,8 +25,8 @@ public class gameScreen {
 
     String ai;
     String human;
-    String aiStyle[] = new String[3];
-    String humanStyle[] = new String[3];
+    String[] aiStyle = new String[3];
+    String[] humanStyle = new String[3];
 
     int gameNumber;
     int player1Wins; //letter x
@@ -277,45 +277,21 @@ public class gameScreen {
 
         // Method to make a move for the AI player
         private void makeAIMove() {
-            ArrayList<Button> emptyCells = new ArrayList<>();
-            for (Button button : buttons) {
-                if (button.getText().isEmpty()) {
-                    emptyCells.add(button);
-                }
+
+            int move;
+            if (TempForData.normalButton)
+            {
+                move = TicTacToeAI.TicTacToeAI(false, buttons, ai, human);
+            }
+            else
+            {
+                move = TicTacToeAI.TicTacToeAI(true, buttons, ai, human);
             }
 
-
-            int bestScore = Integer.MIN_VALUE;
-            int bestMove = 0;
-            if (TempForData.normalButton) {
-                for (int i = 0; i < buttons.size(); i++) {
-                    if (buttons.get(i).getText().equals("")) {
-                        buttons.get(i).setText(ai); // Assuming AI plays with 'O'
-                        int score = TicTacToeAI.minimax(buttons, emptyCells.size(), false, ai, human, Integer.MIN_VALUE, Integer.MAX_VALUE);
-                        buttons.get(i).setText("");
-                        if (score > bestScore) {
-                            bestScore = score;
-                            bestMove = i;
-                        }
-                    }
-
-                }
-                buttons.get(bestMove).setText(ai);
-                buttons.get(bestMove).setStyle(aiStyle[0]);
-                buttons.get(bestMove).setDisable(true);
-                buttonsUsed.add(buttons.get(bestMove));
-            }
-            else {
-                if (!emptyCells.isEmpty()) {
-                    Random random = new Random();
-                    int randomIndex = random.nextInt(emptyCells.size());
-                    Button randomButton = emptyCells.get(randomIndex);
-                    randomButton.setText(ai); // Assuming AI plays with 'O'
-                    randomButton.setStyle(aiStyle[0]);
-                    randomButton.setDisable(true);
-                    buttonsUsed.add(randomButton);
-                }
-            }
+            buttons.get(move).setText(ai);
+            buttons.get(move).setStyle(aiStyle[0]);
+            buttons.get(move).setDisable(true);
+            buttonsUsed.add(buttons.get(move));
             isGameOver();
         }
 
@@ -339,21 +315,21 @@ public class gameScreen {
             // Player 1 wins
             // Update player 1's win count
             player1Wins++;
-            player1WinsLabel.setText("Player 1: " + Integer.toString(player1Wins));
+            player1WinsLabel.setText("Player 1: " + player1Wins);
         } else if (winner.equals(ai)) {
             // Player 2 wins (AI)
             // Update player 2's win count
             player2Wins++;
-            player2WinsLabel.setText("Player 2: " + Integer.toString(player2Wins));
+            player2WinsLabel.setText("Player 2: " + player2Wins);
         } else {
             // It's a draw
             // Update draw count
             numOfDraws++;
-            numOfDrawsLabel.setText("Draws: " + Integer.toString(numOfDraws));
+            numOfDrawsLabel.setText("Draws: " + numOfDraws);
         }
 
         gameNumber++;
-        gameCountLabel.setText("GAME #" + Integer.toString(gameNumber));
+        gameCountLabel.setText("GAME #" + gameNumber);
 
         // Optionally, provide an option to start a new game
         playAgain();
@@ -385,7 +361,7 @@ public class gameScreen {
         switch (type)
         {
             case 0: // rows
-                winnerLine = lines.get(0 + number);
+                winnerLine = lines.get(number);
                 break;
             case 1:
                 winnerLine = lines.get(3 + number);
@@ -396,17 +372,8 @@ public class gameScreen {
         }
         winnerLine.setVisible(true);
 
-        int temp;
-        if (human.equals("X"))
-        {
-            temp = 2;
-        }
-        else
-        {
-            temp = 1;
-        }
 
-        if(buttonsUsed.size() % temp != 0)
+        if(buttonsUsed.get(buttonsUsed.size()-1).getText().equals(human))
         {
             winnerLine.setStyle(humanStyle[2]);
         }
@@ -451,7 +418,6 @@ public class gameScreen {
     public void handlePlayAgain(boolean playAgain) throws IOException {
         if (playAgain) {
 
-            clearBoard();
             if (TempForData.sidesOnButton)
             {
                 String temp;
@@ -466,11 +432,7 @@ public class gameScreen {
                     aiStyle[i] = temp;
                 }
             }
-            if (human.equals("O"))
-            {
-                makeAIMove();
-            }
-
+            clearBoard();
 
         } else {
 
@@ -491,7 +453,10 @@ public class gameScreen {
             winnerLine.setVisible(false);
             winnerLine = null;
         }
-
+        if (human.equals("O"))
+        {
+            makeAIMove();
+        }
     }
 
     // simple function to quit game and return to main menu
