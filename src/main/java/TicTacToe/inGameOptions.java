@@ -91,8 +91,8 @@ public class inGameOptions {
             TempForData.soundVolume = newValue.intValue();
         });
         musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            double volume = newValue.doubleValue() / 100.0;
-            sounds.setBackgroundMusicVolume(volume);
+            TempForData.musicVolume = newValue.intValue();
+            sounds.updateMusicVolume();
         });
     }
 
