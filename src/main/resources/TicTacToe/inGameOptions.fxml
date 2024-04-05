@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TicTacToe.inGameOptions">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="300.0" style="-fx-background-color: linear-gradient(white, lightgrey);" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TicTacToe.inGameOptions">
    <children>
       <Label id="titleLabel" layoutX="110.0" layoutY="37.0" prefHeight="38.0" prefWidth="79.0" text="OPTIONS" textAlignment="CENTER" textOverrun="CLIP">
          <font>
