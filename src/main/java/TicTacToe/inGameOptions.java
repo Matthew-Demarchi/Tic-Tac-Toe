@@ -80,6 +80,7 @@ public class inGameOptions {
         sidesOffButton.setSelected(TempForData.sidesOffButton);
         normalButton.setSelected(TempForData.normalButton);
         sidesOnButton.setSelected(TempForData.sidesOnButton);
+    
 
         setToggleButtonColors();
 
@@ -91,6 +92,7 @@ public class inGameOptions {
         });
         musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             TempForData.musicVolume = newValue.intValue();
+            sounds.updateMusicVolume();
         });
     }
 

@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+import TicTacToe.sounds.sounds;
 import java.io.IOException;
 
 public class TicTacToe extends Application {
@@ -20,6 +20,8 @@ public class TicTacToe extends Application {
     }
 
     public static void main(String[] args) {
+        sounds.initialize();
+        sounds.playBackgroundMusic();
         launch();
     }
 }
