@@ -35,7 +35,7 @@ public class playAgain {
     public void playAgainNoClicked(ActionEvent event) throws IOException {
 
         sounds.playButtonClickSound();
-        gameScreenController.handlePlayAgain(false);
+//        gameScreenController.handlePlayAgain(false);
         ((Stage) noPlayAgain.getScene().getWindow()).close();
 
     }
@@ -43,7 +43,7 @@ public class playAgain {
     public void playAgainYesClicked(ActionEvent event) throws IOException {
 
         sounds.playButtonClickSound();
-        gameScreenController.handlePlayAgain(true);
+//        gameScreenController.handlePlayAgain(true);
         ((Stage) yesPlayAgain.getScene().getWindow()).close();
 
     }

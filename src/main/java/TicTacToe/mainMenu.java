@@ -14,6 +14,7 @@ import TicTacToe.sounds.sounds;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.net.Socket;
 
 public class mainMenu
 {
@@ -37,8 +38,6 @@ public class mainMenu
 
     @FXML
     protected void twoPlayerMode() throws IOException {
-        //code to switch screen/scene to 2 player game
-        //for now just loading the same code for one player
         Stage stage = (Stage) onePlayerButton.getScene().getWindow();
         FXMLLoader onePlayer = new FXMLLoader(getClass().getResource("gameScreen.fxml"));
         Parent root = onePlayer.load();

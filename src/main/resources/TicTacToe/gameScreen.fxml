@@ -98,14 +98,25 @@
       <Label layoutX="465.0" layoutY="9.0" prefHeight="36.0" prefWidth="95.0" text="Games won:" />
       <Label fx:id="player1WinsLabel" layoutX="465.0" layoutY="32.0" prefHeight="26.0" prefWidth="95.0" text="PLAYER1: ---" />
       <Label fx:id="player2WinsLabel" layoutX="465.0" layoutY="54.0" prefHeight="26.0" prefWidth="95.0" text="PLAYER2: ---" />
-      <Line fx:id="topRow" endX="397.0" endY="119.5" startX="193.99998474121094" startY="119.5" visible="false" />
-      <Line fx:id="middleRow" endX="397.0" endY="119.5" layoutX="-1.0" layoutY="69.0" startX="193.99998474121094" startY="119.5" visible="false" />
-      <Line fx:id="bottomRow" endX="397.0" endY="119.5" layoutX="-1.0" layoutY="137.0" startX="193.99998474121094" startY="119.5" visible="false" />
-      <Line fx:id="leftColumn" endX="225.0" endY="287.0" startX="223.99998474121094" startY="89.0" visible="false" />
-      <Line fx:id="middleColumn" endX="225.0" endY="287.0" layoutX="70.0" startX="223.99998474121094" startY="89.0" visible="false" />
-      <Line fx:id="rightColumn" endX="225.0" endY="287.0" layoutX="142.0" layoutY="2.0" startX="223.99998474121094" startY="89.0" visible="false" />
-      <Line fx:id="diagonalTopLeftToBottomRight" endX="397.0" endY="287.0" startX="194.0" startY="89.0" visible="false" />
-      <Line fx:id="diagonalTopRightToBottomLeft" endX="397.0" endY="89.0" startX="195.0" startY="279.5" visible="false" />
+      <Line fx:id="topRow" endX="397.0" endY="119.5" mouseTransparent="true" startX="193.99998474121094" startY="119.5" visible="false" />
+      <Line fx:id="middleRow" endX="397.0" endY="119.5" layoutX="-1.0" layoutY="69.0" mouseTransparent="true" startX="193.99998474121094" startY="119.5" visible="false" />
+      <Line fx:id="bottomRow" endX="397.0" endY="119.5" layoutX="-1.0" layoutY="137.0" mouseTransparent="true" startX="193.99998474121094" startY="119.5" visible="false" />
+      <Line fx:id="leftColumn" endX="225.0" endY="287.0" mouseTransparent="true" startX="223.99998474121094" startY="89.0" visible="false" />
+      <Line fx:id="middleColumn" endX="225.0" endY="287.0" layoutX="70.0" mouseTransparent="true" startX="223.99998474121094" startY="89.0" visible="false" />
+      <Line fx:id="rightColumn" endX="225.0" endY="287.0" layoutX="142.0" layoutY="2.0" mouseTransparent="true" startX="223.99998474121094" startY="89.0" visible="false" />
+      <Line fx:id="diagonalTopLeftToBottomRight" endX="397.0" endY="287.0" mouseTransparent="true" startX="194.0" startY="89.0" visible="false" />
+      <Line fx:id="diagonalTopRightToBottomLeft" endX="397.0" endY="89.0" mouseTransparent="true" startX="195.0" startY="279.5" visible="false" />
       <Label fx:id="numOfDrawsLabel" layoutX="465.0" layoutY="80.0" text="Draws: " />
+      <Label fx:id="errorLabel" prefHeight="36.0" prefWidth="386.0" style="-fx-background-color: transparent;" textFill="RED" wrapText="true" />
+      <Label fx:id="playerNumberLabel" layoutX="14.0" layoutY="369.0" prefHeight="30.0" prefWidth="245.0" style="-fx-background-color: transparent;">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="resultLabel" layoutX="127.0" layoutY="125.0" mouseTransparent="true" prefHeight="131.0" prefWidth="365.0" style="-fx-background-color: transparent;" textAlignment="CENTER">
+         <font>
+            <Font size="90.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

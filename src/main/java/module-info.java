@@ -7,4 +7,6 @@ module TicTacToe {
 
     opens TicTacToe to javafx.fxml;
     exports TicTacToe;
+    exports TicTacToe.Game;
+    opens TicTacToe.Game to javafx.fxml;
 }

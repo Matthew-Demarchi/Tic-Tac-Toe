@@ -40,6 +40,8 @@ public class inGameOptions {
     Slider musicSlider;
     @FXML
     Slider soundSlider;
+    @FXML
+    Button clearButton;
 
     private gameScreen gameScreenController;
 
@@ -47,6 +49,17 @@ public class inGameOptions {
     public void setGameScreenController(gameScreen gameScreenController){
 
         this.gameScreenController = gameScreenController;
+    }
+    public void isVSRealPlayer (boolean vsRealPlayer)
+    {
+        if (vsRealPlayer)
+        {
+            sidesOnButton.setDisable(true);
+            sidesOffButton.setDisable(true);
+            normalButton.setDisable(true);
+            easyButton.setDisable(true);
+            clearButton.setDisable(true);
+        }
     }
 
     private void setToggleButtonColors()
