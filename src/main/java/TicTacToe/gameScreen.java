@@ -1,6 +1,7 @@
 package TicTacToe;
 
 import TicTacToe.Game.Game;
+import TicTacToe.tempForData.TempForData;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,6 +47,7 @@ public class gameScreen {
     Game game;
     Socket socket = null;
     boolean notEstablished = true;
+    int mode = 0;
 
     @FXML
     Label currentTurnLabel;
@@ -83,6 +85,11 @@ public class gameScreen {
 
     Line winnerLine = null;
 
+
+    //TODO add chat
+
+
+
     public void initialize() {
         try {
             System.out.println("startInitialize");
@@ -99,7 +106,8 @@ public class gameScreen {
 
 //            notifier.start();
             listener.start();
-            new Thread(new Notifier(socket, "mode" + 2)).start();
+            System.out.println(mode + " -- mode");
+            new Thread(new Notifier(socket, "mode" + TempForData.mode, this)).start();
             System.out.println("Listener started");
 
             UIToggleOff();
@@ -145,6 +153,10 @@ public class gameScreen {
         aiStyle[0] = "-fx-text-fill: lime; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, lime, 3, 0.1, 0, 0);";
         aiStyle[1] = "-fx-text-fill: lime; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 0.35;";
         aiStyle[2] = "-fx-stroke: lime; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, lime, 3, 0.1, 0, 0);";
+    }
+    public void setMode(int mode)
+    {
+        this.mode = mode;
     }
 
     @FXML
@@ -223,7 +235,7 @@ public class gameScreen {
                 System.out.println("i is equal to " + i);
                 if (button == buttons.get(i))
                 {
-                    new Thread(new Notifier(socket, "move" + i)).start();
+                    new Thread(new Notifier(socket, "/move" + i, this)).start();
                     break;
                 }
             }
@@ -245,8 +257,15 @@ public class gameScreen {
         // then pass the gameScreen controller to the inGameOptions controller
 
         inGameOptions controller = fxmlLoader.getController();
-        controller.setGameScreenController(this);
-        controller.isVSRealPlayer(true);
+        controller.setGameScreenController(this, socket);
+        if (mode == 2)
+        {
+            controller.isVSRealPlayer(true);
+        }
+        else
+        {
+            controller.isVSRealPlayer(false);
+        }
 
 
         Stage stage = new Stage();
@@ -284,7 +303,16 @@ public class gameScreen {
     public void handleOptionsQuit(boolean optionsQuit) throws IOException {
 
         if(optionsQuit)
+            new Thread(new Notifier(socket, "/quit", this)).start();
             quitGame();
+    }
+    public void closeSocket()
+    {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 //    private boolean checkWin(ArrayList<Button> buttons2, String symbol) {
@@ -402,7 +430,7 @@ public class gameScreen {
             }
 
             if (player.equalsIgnoreCase(Integer.toString(winner[0]))) {
-                resultLabel.setText("You win!");
+                resultLabel.setText("You won!");
             } else if (winner[0] == 4) {
                 resultLabel.setText("You tied!");
             } else {
@@ -541,15 +569,27 @@ public class gameScreen {
 
     // simple function to quit game and return to main menu
 
-    private void quitGame() throws IOException {
+    public void quitGame() throws IOException {
+        Platform.runLater(() -> {
+            game.resetGame();
+            buttonsUsed.clear();
+            buttons.clear();
+            lines.clear();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TicTacMainMenu2.fxml"));
-        Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TicTacMainMenu2.fxml"));
+            Parent root = null;
+            try {
+                root = fxmlLoader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Scene scene = new Scene(root);
 
-        Stage primaryStage = (Stage) currentTurnLabel.getScene().getWindow();
-        primaryStage.setScene(scene);
-        primaryStage.show();
+            Stage primaryStage = (Stage) currentTurnLabel.getScene().getWindow();
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        });
+
     }
     public void setErrorLabel(String message)
     {
@@ -659,12 +699,23 @@ public class gameScreen {
                 }
             }
             player1WinsLabel.setText("Player1: " + Integer.toString(game.getPlayer1WinCounter()));
-            player2WinsLabel.setText("Player2: " + Integer.toString(game.getPlayer2WinCounter()));
+            if (mode == 2)
+            {
+                player2WinsLabel.setText("Player2: " + Integer.toString(game.getPlayer2WinCounter()));
+            }
+            else
+            {
+                player2WinsLabel.setText("AI: " + Integer.toString(game.getPlayer2WinCounter()));
+            }
             numOfDrawsLabel.setText("Draws: " + Integer.toString(game.getDraws()));
             notEstablished = false;
         });
 
 
+    }
+    public Socket getSocket()
+    {
+        return socket;
     }
 
     }

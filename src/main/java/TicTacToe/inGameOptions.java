@@ -1,5 +1,6 @@
 package TicTacToe;
 
+import TicTacToe.server.Notifier;
 import TicTacToe.tempForData.TempForData;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.net.Socket;
 import java.util.ArrayList;
 
 public class inGameOptions {
@@ -44,11 +46,13 @@ public class inGameOptions {
     Button clearButton;
 
     private gameScreen gameScreenController;
+    private Socket socket;
 
 
-    public void setGameScreenController(gameScreen gameScreenController){
+    public void setGameScreenController(gameScreen gameScreenController, Socket socket){
 
         this.gameScreenController = gameScreenController;
+        this.socket = socket;
     }
     public void isVSRealPlayer (boolean vsRealPlayer)
     {
@@ -140,6 +144,7 @@ public class inGameOptions {
         sounds.playButtonClickSound();
         TempForData.easyButton = true;
         TempForData.normalButton = false;
+        new Thread(new Notifier(socket, "/difficultyE", gameScreenController)).start();
 
         if(easyButton.isSelected()){
             easyButton.setStyle("-fx-background-color: lightblue;");
@@ -152,6 +157,7 @@ public class inGameOptions {
         sounds.playButtonClickSound();
         TempForData.easyButton = false;
         TempForData.normalButton = true;
+        new Thread(new Notifier(socket, "/difficultyN", gameScreenController)).start();
 
         if(normalButton.isSelected()){
             easyButton.setStyle("-fx-background-color: transparent;");

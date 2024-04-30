@@ -113,7 +113,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Label fx:id="resultLabel" layoutX="127.0" layoutY="125.0" mouseTransparent="true" prefHeight="131.0" prefWidth="365.0" style="-fx-background-color: transparent;" textAlignment="CENTER">
+      <Label fx:id="resultLabel" layoutX="80.0" layoutY="125.0" mouseTransparent="true" prefHeight="130.0" prefWidth="440.0" style="-fx-background-color: transparent; -fx-alignment: center;">
          <font>
             <Font size="90.0" />
          </font>

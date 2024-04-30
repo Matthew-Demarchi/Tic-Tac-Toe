@@ -2,6 +2,9 @@ package TicTacToe.server;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
+
+import TicTacToe.Game.Message;
 import TicTacToe.gameScreen;
 import TicTacToe.Game.Game;
 
@@ -21,90 +24,120 @@ public class Listener implements Runnable
     @Override
     public void run() {
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            System.out.println("listener now running");
             InputStream input = socket.getInputStream();
+            System.out.println("Input stream working");
+            System.out.println("socket is connected -- " + socket.isConnected());
             ObjectInputStream objectInput = new ObjectInputStream(input);
+            System.out.println("Object stream working");
             System.out.println("initialize inputs");
-            String message;
+            Message message = null;
+            Object object = new Object();
 
             while (!shutdown)
             {
                 System.out.println("start while loop");
-                message = reader.readLine();
-                if (message == null)
-                {
-                    continue;
+                try {
+                    object = objectInput.readObject();
+                    System.out.println("read object");
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
                 }
-                else if (message.contains("/quit"))
+                if (object instanceof Game)
                 {
-//                    reader.close();
-//                    notify.shutdown();
-//                    shutdown();
+                    System.out.println("game instance");
+                    Game game = ((Game)object);
+                    System.out.println("buttons -- " + game.buttons());
+                    System.out.println(game.toString());
+                    UI.update(((Game)object));
                 }
-                else if (message.contains("/serverShutdown"))
+                else if (object instanceof Message) //////////////////////////////////////
                 {
+                    System.out.println("message instance");
+                    message = (Message)object;
+                    if (message == null)
+                    {
+                        continue;
+                    }
+                    else if (message.message.contains("/shutdown"))
+                    {
+                        System.out.println("shutdown received");
+                        UI.UIToggleOff();
+                        shutdown = true;
+                        UI.setErrorLabel("The other player has quit, taking you back to the main menu....");
+
+                        try {
+                            Thread.sleep(1500);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        UI.handleOptionsQuit(true);
+                    }
+                    else if (message.message.contains("/serverShutdown"))
+                    {
 //                    UI.quitCommand(true);
 //                    notify.message("/quit");
-                }
-                else if (message.contains("yourTurn"))
-                {
-                    System.out.println("Your turn");
-                    UI.UIToggleOn();
-                }
-                else if (message.contains("notYourTurn"))
-                {
-                    System.out.println("Not your turn");
-                    UI.UIToggleOff();
-                }
-                else if (message.contains("invalid"))
-                {
-                    System.out.println("Invalid input");
-                    UI.setErrorLabel("A issue has occurred, your board has been updated. Please make a new move.");
-                    try {
-                        UI.update((Game)objectInput.readObject());
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
                     }
-                }
-                else if (message.contains("valid"))
-                {
-                    System.out.println("Valid input");
-                    UI.setErrorLabel("");
-                    try {
-                        UI.update((Game)objectInput.readObject());
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
+                    else if (message.message.contains("yourTurn"))
+                    {
+                        System.out.println("Your turn");
+                        UI.UIToggleOn();
                     }
-                }
-                else if (message.equalsIgnoreCase("1") || message.equalsIgnoreCase("2"))
-                {
-                    System.out.println("new game message");
-                    UI.setPlayerLabel(message);
-                    System.out.println("player label set " + message);
-
-
-                    try {
-                        UI.update((Game)(objectInput.readObject()));
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
+                    else if (message.message.contains("notYourTurn"))
+                    {
+                        System.out.println("Not your turn");
+                        UI.UIToggleOff();
                     }
+                    else if (message.message.contains("invalid"))
+                    {
+                        System.out.println("Invalid input");
+                        UI.setErrorLabel("A issue has occurred, your board has been updated. Please make a new move.");
+                    }
+                    else if (message.message.contains("valid"))
+                    {
+                        System.out.println("Valid input");
+                        UI.setErrorLabel("");
 
-                    System.out.println("new game message end " + message);
+                    }
+                    else if (message.message.equalsIgnoreCase("1") || message.message.equalsIgnoreCase("2"))
+                    {
+                        System.out.println("new game message");
+                        UI.setPlayerLabel(message.message);
+                        System.out.println("player label set " + message.message);
 
-                }
-                else if (message.contains("gameOver"))
-                {
-                    UI.gameOver();
+
+                        System.out.println("new game message end " + message.message);
+
+                    }
+                    else if (message.message.contains("gameOver"))
+                    {
+                        UI.gameOver();
+                    }
+                    else
+                    {
+//                    UI.newMessage(message);
+                    }
                 }
                 else
                 {
-//                    UI.newMessage(message);
+                    System.out.println("invalid object received");
                 }
+                object = null;
             }
 
         }
         catch (IOException e) {
+            if (e.getMessage() != null)
+            {
+                if (e.getMessage().equals("Socket closed")) {
+                    System.out.println("Socket is closed. -- Listener");
+                } else {
+                    throw new RuntimeException(e);
+                }
+                return;
+            }
             throw new RuntimeException(e);
+
         }
     }
 

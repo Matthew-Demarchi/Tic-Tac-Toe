@@ -1,5 +1,6 @@
 package TicTacToe;
 
+import TicTacToe.tempForData.TempForData;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,6 +29,7 @@ public class mainMenu
     protected void onePlayerModeClicked() throws IOException
     {
         //code to switch screen/scene to one player game
+        TempForData.mode = 1;
         Stage stage = (Stage) onePlayerButton.getScene().getWindow();
         FXMLLoader onePlayer = new FXMLLoader(getClass().getResource("gameScreen.fxml"));
         Parent root = onePlayer.load();
@@ -38,6 +40,7 @@ public class mainMenu
 
     @FXML
     protected void twoPlayerMode() throws IOException {
+        TempForData.mode = 2;
         Stage stage = (Stage) onePlayerButton.getScene().getWindow();
         FXMLLoader onePlayer = new FXMLLoader(getClass().getResource("gameScreen.fxml"));
         Parent root = onePlayer.load();

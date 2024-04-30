@@ -1,4 +1,5 @@
 package TicTacToe.Game;
+
 import java.io.Serializable;
 
 
@@ -15,7 +16,6 @@ public class Game implements Serializable {
     int xGoesTo = 1;
     boolean winTurnErrorHandled = false;
 
-
     public Game(long ID) {
         gameID = ID;
         player1WinCounter = 0;
@@ -27,7 +27,24 @@ public class Game implements Serializable {
         winner[2] = 0;
         currentPlayer = 1;
         xGoesTo = 1;
-
+        winTurnErrorHandled = false;
+    }
+    public void resetGame()
+    {
+        gameID = 0;
+        player1WinCounter = 0;
+        player2WinCounter = 0;
+        draws = 0;
+        whoGetsFirstMove = 1;
+        winner[0] = 0;
+        winner[1] = 0;
+        winner[2] = 0;
+        currentPlayer = 1;
+        xGoesTo = 1;
+        for (int i = 0; i < buttons.length; i++)
+        {
+            buttons[i] = 0;
+        }
     }
 
     public int getCurrentPlayer() {
@@ -90,10 +107,12 @@ public class Game implements Serializable {
         {
             xGoesTo = 1;
         }
+        winTurnErrorHandled = false;
     }
 
     boolean buttonPressed (int button, int player)
     {
+        System.out.println(button + " pressed " + player);
         if (buttons[button] == 0 && player == whoGetsNextMove())
         {
             buttons[button] = player; // buttons -- 0 == empty, 1 == player1, 2 == player2
@@ -120,8 +139,7 @@ public class Game implements Serializable {
     }
     void updateWinCounter(int player)
     {
-
-        if(player == 3)
+        if (player == 3)
         {
             return;
         }
@@ -147,64 +165,99 @@ public class Game implements Serializable {
     public int getWhoGetsFirstMove() {
         return whoGetsFirstMove;
     }
+    private void handleWinTurnSwap()
+    {
+        if (winTurnErrorHandled)
+        {
+            System.out.println("winTurnErrorHandled already");
+            return;
+        }
+
+
+        if (whoGetsFirstMove == 1)
+        {
+            currentPlayer = 2;
+            System.out.println("whoGetsFirstMove handled with 2");
+        }
+        else
+        {
+            currentPlayer = 1;
+            System.out.println("whoGetsFirstMove handled with 1");
+        }
+        winTurnErrorHandled = true;
+
+    }
 
     public boolean isGameOver()
     {
-        for (int i = 1; i < 3; i++) {
-            // check rows
-            for (int j = 0; j < 3; j++) {
-                if (buttons[j * 3] == i && buttons[j * 3 + 1] == i && buttons[j * 3 + 2] == i) {
-                    updateWinCounter(i);
-                    winner[0] = i;
-                    winner[1] = 0;
-                    winner[2] = j;
-                    return true;
+        if (winner[0] == 0)
+        {
+            for (int i = 1; i < 3; i++) {
+                // check rows
+                for (int j = 0; j < 3; j++) {
+                    if (buttons[j * 3] == i && buttons[j * 3 + 1] == i && buttons[j * 3 + 2] == i) {
+                        updateWinCounter(i);
+                        handleWinTurnSwap();
+                        winner[0] = i;
+                        winner[1] = 0;
+                        winner[2] = j;
+                        return true;
+                    }
                 }
-            }
-            for (int j = 0; j < 3; j++)
-            {
-                if (buttons[j] == i && buttons[j + 3] == i && buttons[j + 6] == i)
+                for (int j = 0; j < 3; j++)
+                {
+                    if (buttons[j] == i && buttons[j + 3] == i && buttons[j + 6] == i)
+                    {
+                        updateWinCounter(i);
+                        handleWinTurnSwap();
+                        winner[0] = i;
+                        winner[1] = 1;
+                        winner[2] = j;
+                        return true;
+                    }
+                }
+                if (buttons[0] == i && buttons[4] == i && buttons[8] == i)
                 {
                     updateWinCounter(i);
+                    handleWinTurnSwap();
                     winner[0] = i;
-                    winner[1] = 1;
-                    winner[2] = j;
+                    winner[1] = 2;
+                    winner[2] = 0;
+                    return true;
+                }
+                if (buttons[2] == i && buttons[4] == i && buttons[6] == i)
+                {
+                    updateWinCounter(i);
+                    handleWinTurnSwap();
+                    winner[0] = i;
+                    winner[1] = 2;
+                    winner[2] = 1;
                     return true;
                 }
             }
-            if (buttons[0] == i && buttons[4] == i && buttons[8] == i)
+            for (int i = 0; i < 9; i++)
             {
-                updateWinCounter(i);
-                winner[0] = i;
-                winner[1] = 2;
-                winner[2] = 0;
-                return true;
+                if (buttons[i] == 0)
+                {
+                    updateWinCounter(3);
+                    winner[0] = 0;
+                    winner[1] = 0;
+                    winner[2] = 0;
+                    return false;
+                }
             }
-            if (buttons[2] == i && buttons[4] == i && buttons[6] == i)
-            {
-                updateWinCounter(i);
-                winner[0] = i;
-                winner[1] = 2;
-                winner[2] = 1;
-                return true;
-            }
+            updateWinCounter(4);
+            handleWinTurnSwap();
+            winner[0] = 4;
+            winner[1] = 0;
+            winner[2] = 0;
+            return true;
         }
-        for (int i = 0; i < 9; i++)
+        else
         {
-            if (buttons[i] == 0)
-            {
-                updateWinCounter(3);
-                winner[0] = 0;
-                winner[1] = 0;
-                winner[2] = 0;
-                return false;
-            }
+            return true;
         }
-        updateWinCounter(4);
-        winner[0] = 4;
-        winner[1] = 0;
-        winner[2] = 0;
-        return true;
+
     }
     private void swapFirstMoveMaker()
     {
@@ -230,6 +283,18 @@ public class Game implements Serializable {
                 winner[2]  + "\n" +
                 currentPlayer + "\n" +
                 xGoesTo  + "\n");
+    }
+    public String buttons()
+    {
+        return ("button 0 --" + buttons[0] +
+                "button 1 --" + buttons[1] +
+                "button 2 --" + buttons[2] +
+                "button 3 --" + buttons[3] +
+                "button 4 --" + buttons[4] +
+                "button 5 --" + buttons[5] +
+                "button 6 --" + buttons[6] +
+                "button 7 --" + buttons[7] +
+                "button 8 --" + buttons[8]);
     }
 
 
