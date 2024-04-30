@@ -69,6 +69,8 @@ public class gameScreen {
     Label playerNumberLabel;
     @FXML
     Label resultLabel;
+    @FXML
+    Button OptionsButton;
 
     private static ArrayList<Button> buttonsUsed = new ArrayList<>();
 
@@ -86,7 +88,7 @@ public class gameScreen {
     Line winnerLine = null;
 
 
-    //TODO add chat
+    //TODO add chat, fix bug that causes error when quitting while a win/lose/tie screen is up
 
 
 
@@ -109,8 +111,6 @@ public class gameScreen {
             System.out.println(mode + " -- mode");
             new Thread(new Notifier(socket, "mode" + TempForData.mode, this)).start();
             System.out.println("Listener started");
-
-            UIToggleOff();
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -153,6 +153,7 @@ public class gameScreen {
         aiStyle[0] = "-fx-text-fill: lime; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, lime, 3, 0.1, 0, 0);";
         aiStyle[1] = "-fx-text-fill: lime; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 0.35;";
         aiStyle[2] = "-fx-stroke: lime; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, lime, 3, 0.1, 0, 0);";
+        UIToggleOff();
     }
     public void setMode(int mode)
     {
@@ -258,7 +259,7 @@ public class gameScreen {
 
         inGameOptions controller = fxmlLoader.getController();
         controller.setGameScreenController(this, socket);
-        if (mode == 2)
+        if (TempForData.mode == 2)
         {
             controller.isVSRealPlayer(true);
         }
@@ -276,17 +277,6 @@ public class gameScreen {
 
     } catch (IOException e){
                 e.printStackTrace();
-            }
-            if (buttonsUsed.size() == 0)
-            {
-                currentTurnLabel.setText("Current Turn: " + human);
-                for (Button button : buttons) {
-                    button.setDisable(false);
-                }
-                if (winnerLine != null)
-                {
-                    winnerLine.setVisible(false);
-                }
             }
     }
 
@@ -424,6 +414,11 @@ public class gameScreen {
     public void gameOver()
     {
         Platform.runLater(() -> {
+            if (OptionsButton != null)
+            {
+                OptionsButton.setDisable(true);
+
+            }
             int[] winner = game.getWinner();
             if (winner[0] == 1 || winner[0] == 2) {
                 showLine(winner[1], winner[2], winner[0]);
@@ -656,6 +651,10 @@ public class gameScreen {
             {
                 resultLabel.setText("");
             }
+            if (OptionsButton != null)
+            {
+                OptionsButton.setDisable(false);
+            }
             this.game = game;
             for (int i = 0; i < buttons.size(); i++)
             {
@@ -699,7 +698,7 @@ public class gameScreen {
                 }
             }
             player1WinsLabel.setText("Player1: " + Integer.toString(game.getPlayer1WinCounter()));
-            if (mode == 2)
+            if (TempForData.mode == 2)
             {
                 player2WinsLabel.setText("Player2: " + Integer.toString(game.getPlayer2WinCounter()));
             }
