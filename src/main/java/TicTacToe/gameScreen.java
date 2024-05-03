@@ -2,6 +2,7 @@ package TicTacToe;
 
 import TicTacToe.Game.Game;
 import TicTacToe.tempForData.TempForData;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -22,6 +24,7 @@ import java.util.ArrayList;
 
 import TicTacToe.sounds.sounds;
 import TicTacToe.server.*;
+import javafx.util.Duration;
 
 
 public class gameScreen {
@@ -48,6 +51,7 @@ public class gameScreen {
     Socket socket = null;
     boolean notEstablished = true;
     int mode = 0;
+    boolean chatVisible = false;
 
     @FXML
     Label currentTurnLabel;
@@ -71,7 +75,12 @@ public class gameScreen {
     Label resultLabel;
     @FXML
     Button OptionsButton;
-
+    @FXML
+    Button chatButton;
+    @FXML
+    AnchorPane chatArea;
+    @FXML
+    AnchorPane gameArea;
     private static ArrayList<Button> buttonsUsed = new ArrayList<>();
 
     @FXML
@@ -158,6 +167,23 @@ public class gameScreen {
     public void setMode(int mode)
     {
         this.mode = mode;
+    }
+    @FXML
+    protected void chatButtonClicked()
+    {
+        chatVisible = chatArea.isVisible();
+        chatArea.setVisible(!chatVisible);
+        System.out.println(chatVisible + " chat visible");
+
+        Stage stage = (Stage) chatArea.getScene().getWindow();
+        if (!chatVisible) {
+            chatArea.setVisible(true);
+            stage.setWidth(stage.getWidth() + (gameArea.getWidth()/3));
+        } else {
+            chatArea.setVisible(false);
+            stage.setWidth(stage.getWidth() - (gameArea.getWidth()/3));
+        }
+
     }
 
     @FXML

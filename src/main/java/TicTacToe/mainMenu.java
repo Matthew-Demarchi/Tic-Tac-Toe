@@ -35,6 +35,7 @@ public class mainMenu
         Parent root = onePlayer.load();
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setWidth(600);
         sounds.playButtonClickSound();
     }
 
@@ -46,6 +47,7 @@ public class mainMenu
         Parent root = onePlayer.load();
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setWidth(600);
         sounds.playButtonClickSound();
     }
 
