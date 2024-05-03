@@ -156,12 +156,12 @@ public class gameScreen {
 
         ai = "O";
         human = "X";
-        humanStyle[0] = "-fx-text-fill: red; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, red, 3, 0.1, 0, 0);";
-        humanStyle[1] = "-fx-text-fill: red; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 0.35;";
-        humanStyle[2] = "-fx-stroke: red; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, red, 3, 0.1, 0, 0);";
-        aiStyle[0] = "-fx-text-fill: lime; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, lime, 3, 0.1, 0, 0);";
-        aiStyle[1] = "-fx-text-fill: lime; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 0.35;";
-        aiStyle[2] = "-fx-stroke: lime; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, lime, 3, 0.1, 0, 0);";
+        humanStyle[0] = "-fx-text-fill: blue; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, blue, 3, 0.1, 0, 0);";
+        humanStyle[1] = "-fx-text-fill: blue; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 0.35;";
+        humanStyle[2] = "-fx-stroke: blue; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, blue, 3, 0.1, 0, 0);";
+        aiStyle[0] = "-fx-text-fill: black; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, black, 3, 0.1, 0, 0);";
+        aiStyle[1] = "-fx-text-fill: black; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 0.35;";
+        aiStyle[2] = "-fx-stroke: black; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, black, 3, 0.1, 0, 0);";
         UIToggleOff();
     }
     public void setMode(int mode)
