@@ -117,6 +117,7 @@ public class inGameOptions {
         sounds.playButtonClickSound();
         TempForData.sidesOffButton = false;
         TempForData.sidesOnButton = true;
+        new Thread(new Notifier(socket, "/switchSidesY", gameScreenController)).start();
 
 
         if (sidesOnButton.isSelected()) {
@@ -130,6 +131,8 @@ public class inGameOptions {
             sounds.playButtonClickSound();
             TempForData.sidesOffButton = true;
             TempForData.sidesOnButton = false;
+            new Thread(new Notifier(socket, "/switchSidesN", gameScreenController)).start();
+
 
             if (sidesOffButton.isSelected()) {
                 // Change color when selected
@@ -177,6 +180,8 @@ public class inGameOptions {
 
     public void clearButtonClicked(ActionEvent event){
         sounds.playButtonClickSound();
+
+        new Thread(new Notifier(socket, "/clearBoard", gameScreenController)).start();
 
         Stage optionsStage = (Stage) (easyButton.getScene().getWindow());
         gameScreenController.handleOptionsClear(true);

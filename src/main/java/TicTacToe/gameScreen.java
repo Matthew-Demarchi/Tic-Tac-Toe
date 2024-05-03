@@ -10,7 +10,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -48,6 +54,7 @@ public class gameScreen {
     Socket socket = null;
     boolean notEstablished = true;
     int mode = 0;
+    boolean chatVisible = false;
 
     @FXML
     Label currentTurnLabel;
@@ -71,6 +78,20 @@ public class gameScreen {
     Label resultLabel;
     @FXML
     Button OptionsButton;
+    @FXML
+    Button chatButton;
+    @FXML
+    AnchorPane chatArea;
+    @FXML
+    AnchorPane gameArea;
+    @FXML
+    TextField messageField;
+    @FXML
+    AnchorPane messagePane;
+    @FXML
+    TextArea chatBox;
+    @FXML
+    Circle chatDot;
 
     private static ArrayList<Button> buttonsUsed = new ArrayList<>();
 
@@ -88,7 +109,7 @@ public class gameScreen {
     Line winnerLine = null;
 
 
-    //TODO add chat, fix bug that causes error when quitting while a win/lose/tie screen is up
+    //TODO: fix bug where you can't quit while trying to find a match
 
 
 
@@ -109,7 +130,7 @@ public class gameScreen {
 //            notifier.start();
             listener.start();
             System.out.println(mode + " -- mode");
-            new Thread(new Notifier(socket, "mode" + TempForData.mode, this)).start();
+            new Thread(new Notifier(socket, "/mode" + TempForData.mode, this)).start();
             System.out.println("Listener started");
 
         } catch (Exception e) {
@@ -154,10 +175,82 @@ public class gameScreen {
         aiStyle[1] = "-fx-text-fill: black; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 0.35;";
         aiStyle[2] = "-fx-stroke: black; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, black, 3, 0.1, 0, 0);";
         UIToggleOff();
+        if (TempForData.mode == 1)
+        {
+            chatButton.setDisable(true);
+            chatButton.setVisible(false);
+        }
+        else
+        {
+            chatButton.setDisable(false);
+            chatButton.setVisible(true);
+        }
     }
     public void setMode(int mode)
     {
         this.mode = mode;
+    }
+
+    @FXML
+    protected void chatButtonClicked()
+    {
+        chatVisible = chatArea.isVisible();
+        chatArea.setVisible(!chatVisible);
+        System.out.println(chatVisible + " chat visible");
+
+        Stage stage = (Stage) chatArea.getScene().getWindow();
+        if (!chatVisible) {
+            chatDot.setVisible(false);
+            chatArea.setVisible(true);
+            stage.setWidth(stage.getWidth() + chatArea.getPrefWidth());
+        } else {
+            chatArea.setVisible(false);
+            stage.setWidth(stage.getWidth() - chatArea.getPrefWidth());
+        }
+
+    }
+    @FXML
+    protected void keyPressedInTextEntry(KeyEvent event)
+    {
+        if (event.getCode() == KeyCode.ENTER)
+        {
+            sendButtonClicked();
+        }
+    }
+
+    @FXML
+    protected void sendButtonClicked() {
+        String text = isNull(messageField);
+        if (!text.equalsIgnoreCase("")) {
+            if (text.contains("/"))
+            {
+                errorLabel.setText("The the character \"/\" is not allowed in messages");
+            }
+            else
+            {
+                new Thread(new Notifier(socket, "/messagePlayer " + player + ":   " + text, this)).start();
+                messageField.setText("");
+                errorLabel.setText("");
+            }
+
+        }
+
+    }
+    public void newMessage(String text) {
+        chatBox.appendText(text + "\n");
+        if (!chatArea.isVisible())
+        {
+            chatDot.setVisible(true);
+        }
+    }
+
+
+    private String isNull(TextField field) {
+        if (field == null) {
+            return "";
+        } else {
+            return field.getText();
+        }
     }
 
     @FXML
@@ -566,6 +659,8 @@ public class gameScreen {
 
     public void quitGame() throws IOException {
         Platform.runLater(() -> {
+            messageField.setText("");
+            chatBox.setText("");
             game.resetGame();
             buttonsUsed.clear();
             buttons.clear();
@@ -581,6 +676,7 @@ public class gameScreen {
             Scene scene = new Scene(root);
 
             Stage primaryStage = (Stage) currentTurnLabel.getScene().getWindow();
+            primaryStage.setWidth(scene.getWidth());
             primaryStage.setScene(scene);
             primaryStage.show();
         });
