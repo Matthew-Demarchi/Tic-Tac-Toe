@@ -665,6 +665,10 @@ public class gameScreen {
             buttonsUsed.clear();
             buttons.clear();
             lines.clear();
+            TempForData.sidesOffButton = false;
+            TempForData.sidesOnButton = true;
+            TempForData.easyButton = false;
+            TempForData.normalButton = true;
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TicTacMainMenu2.fxml"));
             Parent root = null;
