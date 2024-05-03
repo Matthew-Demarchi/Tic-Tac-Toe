@@ -31,7 +31,7 @@ public class Notifier implements Runnable {
                 System.out.println(message.charAt(message.length()-1) + " -- move");
                 out.println(message);
             }
-            else if (message.contains("mode"))
+            else if (message.contains("/mode"))
             {
                 System.out.println(message.charAt(message.length()-1));
 
@@ -45,6 +45,21 @@ public class Notifier implements Runnable {
             else if (message.contains("/difficulty"))
             {
                 System.out.println(message.charAt(message.length()-1) + " -- difficulty");
+                out.println(message);
+            }
+            else if (message.contains("/clearBoard"))
+            {
+                System.out.println(" -- clear board");
+                out.println(message);
+            }
+            else if (message.contains("/switchSides"))
+            {
+                System.out.println(" -- switch sides");
+                out.println(message);
+            }
+            else if (message.contains("/message"))
+            {
+                System.out.println(message + " -- message");
                 out.println(message);
             }
                 else
