@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import TicTacToe.sounds.sounds;
 import TicTacToe.server.*;
 
-
+//TODO fix bug when quitting before getting into a 2 player game and fix socket not connecting
 public class gameScreen {
 
     String ai;
@@ -52,6 +52,7 @@ public class gameScreen {
     boolean notEstablished = true;
     int mode = 0;
     boolean chatVisible = false;
+    boolean quit = false;
 
     boolean sunsetMode = false;
 
@@ -117,82 +118,86 @@ public class gameScreen {
 
 
     public void initialize() {
-        try {
-            System.out.println("startInitialize");
+            buttons.add(boardButton1);
+            buttons.add(boardButton2);
+            buttons.add(boardButton3);
+            buttons.add(boardButton4);
+            buttons.add(boardButton5);
+            buttons.add(boardButton6);
+            buttons.add(boardButton7);
+            buttons.add(boardButton8);
+            buttons.add(boardButton9);
 
-            socket = new Socket("localhost", 80);
-            System.out.println("socket connected");
+            lines.add(topRow);
+            lines.add(middleRow);
+            lines.add(bottomRow);
+            lines.add(leftColumn);
+            lines.add(middleColumn);
+            lines.add(rightColumn);
+            lines.add(diagonalTopLeftToBottomRight);
+            lines.add(diagonalTopRightToBottomLeft);
 
-//            notify = new Notifier(socket, null);
-            listen = new Listener(socket, this); // notify
+            gameNumber = 1;
+            player1Wins = 0;
+            player2Wins = 0;
+            numOfDraws = 0;
 
+            gameCountLabel.setText("GAME #" + Integer.toString(gameNumber));
+            player1WinsLabel.setText("Player 1: " + Integer.toString(player1Wins));
+            player2WinsLabel.setText("Player 2: " + Integer.toString(player2Wins));
+            numOfDrawsLabel.setText("Draws: " + Integer.toString(numOfDraws));
+            playerNumberLabel.setText("finding opponent...");
+            quit = false;
+            //System.out.print(buttons.size());
 
-//            notifier = new Thread(notify);
-            listener = new Thread(listen);
-
-//            notifier.start();
-            listener.start();
-            System.out.println(mode + " -- mode");
-            new Thread(new Notifier(socket, "/mode" + TempForData.mode, this)).start();
-            System.out.println("Listener started");
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        buttons.add(boardButton1);
-        buttons.add(boardButton2);
-        buttons.add(boardButton3);
-        buttons.add(boardButton4);
-        buttons.add(boardButton5);
-        buttons.add(boardButton6);
-        buttons.add(boardButton7);
-        buttons.add(boardButton8);
-        buttons.add(boardButton9);
-
-        lines.add(topRow);
-        lines.add(middleRow);
-        lines.add(bottomRow);
-        lines.add(leftColumn);
-        lines.add(middleColumn);
-        lines.add(rightColumn);
-        lines.add(diagonalTopLeftToBottomRight);
-        lines.add(diagonalTopRightToBottomLeft);
-
-        gameNumber = 1;
-        player1Wins = 0;
-        player2Wins = 0;
-        numOfDraws = 0;
-
-        gameCountLabel.setText("GAME #" + Integer.toString(gameNumber));
-        player1WinsLabel.setText("Player 1: " + Integer.toString(player1Wins));
-        player2WinsLabel.setText("Player 2: " + Integer.toString(player2Wins));
-        numOfDrawsLabel.setText("Draws: " + Integer.toString(numOfDraws));
-        //System.out.print(buttons.size());
-
-        ai = "O";
-        human = "X";
-        humanStyle[0] = "-fx-text-fill: blue; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, blue, 3, 0.1, 0, 0);";
-        humanStyle[1] = "-fx-text-fill: blue; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 0.35;";
-        humanStyle[2] = "-fx-stroke: blue; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, blue, 3, 0.1, 0, 0);";
-        aiStyle[0] = "-fx-text-fill: black; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, black, 3, 0.1, 0, 0);";
-        aiStyle[1] = "-fx-text-fill: black; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 0.35;";
-        aiStyle[2] = "-fx-stroke: black; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, black, 3, 0.1, 0, 0);";
-        UIToggleOff();
-        if (TempForData.mode == 1)
-        {
-            chatButton.setDisable(true);
-            chatButton.setVisible(false);
-        }
-        else
-        {
-            chatButton.setDisable(false);
-            chatButton.setVisible(true);
-        }
+            ai = "O";
+            human = "X";
+            humanStyle[0] = "-fx-text-fill: blue; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, blue, 3, 0.1, 0, 0);";
+            humanStyle[1] = "-fx-text-fill: blue; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 0.35;";
+            humanStyle[2] = "-fx-stroke: blue; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, blue, 3, 0.1, 0, 0);";
+            aiStyle[0] = "-fx-text-fill: black; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, black, 3, 0.1, 0, 0);";
+            aiStyle[1] = "-fx-text-fill: black; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 0.35;";
+            aiStyle[2] = "-fx-stroke: black; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, black, 3, 0.1, 0, 0);";
+            UIToggleOff();
+            if (TempForData.mode == 1) {
+                chatButton.setDisable(true);
+                chatButton.setVisible(false);
+            } else {
+                chatButton.setDisable(false);
+                chatButton.setVisible(true);
+            }
 
     }
     public void setMode(int mode)
     {
         this.mode = mode;
+    }
+    public void connectToServer(Socket socket)
+    {
+        this.socket = socket;
+        try {
+            System.out.println("startInitialize");
+
+
+
+            System.out.println("socket connected");
+
+            listen = new Listener(socket, this); // notify
+
+
+            listener = new Thread(listen);
+
+            listener.start();
+            System.out.println(mode + " -- mode");
+            new Thread(new Notifier(socket, "/mode" + TempForData.mode, this)).start();
+            System.out.println("Listener started");
+
+
+
+        } catch(Exception e){
+                throw new RuntimeException(e);
+            }
+
     }
 
     @FXML
@@ -667,7 +672,10 @@ public class gameScreen {
         Platform.runLater(() -> {
             messageField.setText("");
             chatBox.setText("");
-            game.resetGame();
+            if (game != null)
+            {
+                game.resetGame();
+            }
             buttonsUsed.clear();
             buttons.clear();
             lines.clear();
@@ -675,6 +683,7 @@ public class gameScreen {
             TempForData.sidesOnButton = true;
             TempForData.easyButton = false;
             TempForData.normalButton = true;
+            quit = true;
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TicTacMainMenu2.fxml"));
             Parent root = null;

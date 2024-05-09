@@ -187,8 +187,12 @@ public class inGameOptions {
         Stage optionsStage = (Stage) (easyButton.getScene().getWindow());
         optionsStage.close();
 
-        gameScreenController.handleOptionsQuit(true);
-        ((Stage) easyButton.getScene().getWindow()).close();
+        if (!gameScreenController.quit)
+        {
+            System.out.println("game screen socket is connected");
+            gameScreenController.handleOptionsQuit(true);
+            ((Stage) easyButton.getScene().getWindow()).close();
+        }
     }
 
     public void clearButtonClicked(ActionEvent event){
