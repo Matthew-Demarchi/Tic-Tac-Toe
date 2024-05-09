@@ -12,6 +12,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import TicTacToe.sounds.sounds;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
@@ -45,6 +46,9 @@ public class inGameOptions {
     @FXML
     Button clearButton;
 
+    @FXML
+    AnchorPane optionsPane;
+
     private gameScreen gameScreenController;
     private Socket socket;
 
@@ -53,6 +57,12 @@ public class inGameOptions {
 
         this.gameScreenController = gameScreenController;
         this.socket = socket;
+
+        if (gameScreenController.sunsetMode){
+
+            optionsPane.setStyle("-fx-background-color: linear-gradient(to bottom, crimson, lightcoral, skyblue, deepskyblue);");
+
+        }
     }
     public void isVSRealPlayer (boolean vsRealPlayer)
     {
@@ -81,7 +91,7 @@ public class inGameOptions {
 
         if (sidesOnButton.isSelected())
         {
-            sidesOnButton.setStyle("-fx-background-color: lightgreen;");
+            sidesOnButton.setStyle("-fx-background-color: lightgreen; ");
             sidesOffButton.setStyle("-fx-background-color: transparent;");
         }
         else
@@ -93,6 +103,9 @@ public class inGameOptions {
 
 
     public void initialize(){
+
+
+
         easyButton.setSelected(TempForData.easyButton);
         sidesOffButton.setSelected(TempForData.sidesOffButton);
         normalButton.setSelected(TempForData.normalButton);
@@ -137,7 +150,7 @@ public class inGameOptions {
             if (sidesOffButton.isSelected()) {
                 // Change color when selected
                 sidesOnButton.setStyle("-fx-background-color: transparent;");
-                sidesOffButton.setStyle("-fx-background-color: pink;");
+                sidesOffButton.setStyle("-fx-background-color: pink; ");
             }
 
         }

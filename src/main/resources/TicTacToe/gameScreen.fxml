@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import java.lang.Double?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.BoxBlur?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.text.Font?>
 
-<HBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TicTacToe.gameScreen">
+<HBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TicTacToe.gameScreen">
 <AnchorPane fx:id="gameArea" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: linear-gradient(lightgrey, lightblue);">
    <children>
       <ImageView disable="true" fitHeight="400.0" fitWidth="600.0" opacity="0.27" pickOnBounds="true">
@@ -187,6 +199,11 @@
             <effect>
                <BoxBlur height="3.0" width="3.0" />
             </effect></Circle>
+         <CheckBox fx:id="sunsetModeCheckBox" layoutX="139.0" layoutY="377.0" mnemonicParsing="false" onAction="#changeTheme" text="Sunset Theme" textFill="#000000bd">
+            <font>
+               <Font name="Segoe UI Black" size="12.0" />
+            </font>
+         </CheckBox>
    </children>
 </AnchorPane>
    <AnchorPane fx:id="chatArea" maxWidth="200.0" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(lightgrey, lightblue);" visible="false">

@@ -8,10 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -56,6 +53,8 @@ public class gameScreen {
     int mode = 0;
     boolean chatVisible = false;
 
+    boolean sunsetMode = false;
+
     @FXML
     Label currentTurnLabel;
 
@@ -92,6 +91,10 @@ public class gameScreen {
     TextArea chatBox;
     @FXML
     Circle chatDot;
+
+
+    @FXML
+    private CheckBox sunsetModeCheckBox;
 
     private static ArrayList<Button> buttonsUsed = new ArrayList<>();
 
@@ -185,6 +188,7 @@ public class gameScreen {
             chatButton.setDisable(false);
             chatButton.setVisible(true);
         }
+
     }
     public void setMode(int mode)
     {
@@ -344,6 +348,8 @@ public class gameScreen {
         sounds.playButtonClickSound();
             try {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("inGameOptions.fxml"));
+
+
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
 
@@ -817,5 +823,27 @@ public class gameScreen {
         return socket;
     }
 
+
+
+    public void changeTheme(ActionEvent actionEvent) {
+
+        if(sunsetModeCheckBox.isSelected()){
+
+            gameArea.setStyle("-fx-background-color: linear-gradient(to bottom, crimson, lightcoral, skyblue, deepskyblue);");
+
+            chatArea.setStyle("-fx-background-color: linear-gradient(to bottom, crimson, lightcoral, skyblue, deepskyblue);");
+
+            sunsetMode = true;
+        }
+
+        else{
+
+            gameArea.setStyle("-fx-background-color: linear-gradient(to bottom, lightgrey, lightblue)");
+
+            chatArea.setStyle("-fx-background-color: linear-gradient(to bottom,lightgrey, lightblue);");
+
+            sunsetMode = false;
+        }
     }
+}
 
