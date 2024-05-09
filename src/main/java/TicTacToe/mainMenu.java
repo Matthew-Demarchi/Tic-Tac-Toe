@@ -31,9 +31,11 @@ public class mainMenu
         //code to switch screen/scene to one player game
         TempForData.mode = 1;
         Stage stage = (Stage) onePlayerButton.getScene().getWindow();
+        stage.setResizable(false);
         FXMLLoader onePlayer = new FXMLLoader(getClass().getResource("gameScreen.fxml"));
         Parent root = onePlayer.load();
         Scene scene = new Scene(root);
+        stage.setWidth(615);
         stage.setScene(scene);
         stage.setWidth(600);
         sounds.playButtonClickSound();
@@ -46,6 +48,7 @@ public class mainMenu
         FXMLLoader onePlayer = new FXMLLoader(getClass().getResource("gameScreen.fxml"));
         Parent root = onePlayer.load();
         Scene scene = new Scene(root);
+        stage.setWidth(615);
         stage.setScene(scene);
         stage.setWidth(600);
         sounds.playButtonClickSound();

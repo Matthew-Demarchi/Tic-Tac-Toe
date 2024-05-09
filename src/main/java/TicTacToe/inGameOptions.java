@@ -12,6 +12,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import TicTacToe.sounds.sounds;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
@@ -45,6 +46,9 @@ public class inGameOptions {
     @FXML
     Button clearButton;
 
+    @FXML
+    AnchorPane optionsPane;
+
     private gameScreen gameScreenController;
     private Socket socket;
 
@@ -53,6 +57,12 @@ public class inGameOptions {
 
         this.gameScreenController = gameScreenController;
         this.socket = socket;
+
+        if (gameScreenController.sunsetMode){
+
+            optionsPane.setStyle("-fx-background-color: linear-gradient(to bottom, crimson, lightcoral, skyblue, deepskyblue);");
+
+        }
     }
     public void isVSRealPlayer (boolean vsRealPlayer)
     {
@@ -81,7 +91,7 @@ public class inGameOptions {
 
         if (sidesOnButton.isSelected())
         {
-            sidesOnButton.setStyle("-fx-background-color: lightgreen;");
+            sidesOnButton.setStyle("-fx-background-color: lightgreen; ");
             sidesOffButton.setStyle("-fx-background-color: transparent;");
         }
         else
@@ -93,6 +103,9 @@ public class inGameOptions {
 
 
     public void initialize(){
+
+
+
         easyButton.setSelected(TempForData.easyButton);
         sidesOffButton.setSelected(TempForData.sidesOffButton);
         normalButton.setSelected(TempForData.normalButton);
@@ -117,6 +130,7 @@ public class inGameOptions {
         sounds.playButtonClickSound();
         TempForData.sidesOffButton = false;
         TempForData.sidesOnButton = true;
+        new Thread(new Notifier(socket, "/switchSidesY", gameScreenController)).start();
 
 
         if (sidesOnButton.isSelected()) {
@@ -130,11 +144,13 @@ public class inGameOptions {
             sounds.playButtonClickSound();
             TempForData.sidesOffButton = true;
             TempForData.sidesOnButton = false;
+            new Thread(new Notifier(socket, "/switchSidesN", gameScreenController)).start();
+
 
             if (sidesOffButton.isSelected()) {
                 // Change color when selected
                 sidesOnButton.setStyle("-fx-background-color: transparent;");
-                sidesOffButton.setStyle("-fx-background-color: pink;");
+                sidesOffButton.setStyle("-fx-background-color: pink; ");
             }
 
         }
@@ -177,6 +193,8 @@ public class inGameOptions {
 
     public void clearButtonClicked(ActionEvent event){
         sounds.playButtonClickSound();
+
+        new Thread(new Notifier(socket, "/clearBoard", gameScreenController)).start();
 
         Stage optionsStage = (Stage) (easyButton.getScene().getWindow());
         gameScreenController.handleOptionsClear(true);

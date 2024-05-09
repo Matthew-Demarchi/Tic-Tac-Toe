@@ -15,6 +15,7 @@ public class TicTacToe extends Application {
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         stage.setTitle("TicTacToe!");
+
         stage.setScene(scene);
         stage.show();
     }

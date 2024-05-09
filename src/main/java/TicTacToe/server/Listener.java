@@ -78,40 +78,45 @@ public class Listener implements Runnable
 //                    UI.quitCommand(true);
 //                    notify.message("/quit");
                     }
-                    else if (message.message.contains("yourTurn"))
+                    else if (message.message.contains("/yourTurn"))
                     {
                         System.out.println("Your turn");
                         UI.UIToggleOn();
                     }
-                    else if (message.message.contains("notYourTurn"))
+                    else if (message.message.contains("/notYourTurn"))
                     {
                         System.out.println("Not your turn");
                         UI.UIToggleOff();
                     }
-                    else if (message.message.contains("invalid"))
+                    else if (message.message.contains("/invalid"))
                     {
                         System.out.println("Invalid input");
                         UI.setErrorLabel("A issue has occurred, your board has been updated. Please make a new move.");
                     }
-                    else if (message.message.contains("valid"))
+                    else if (message.message.contains("/valid"))
                     {
                         System.out.println("Valid input");
                         UI.setErrorLabel("");
 
                     }
-                    else if (message.message.equalsIgnoreCase("1") || message.message.equalsIgnoreCase("2"))
+                    else if (message.message.equalsIgnoreCase("/1") || message.message.equalsIgnoreCase("/2"))
                     {
                         System.out.println("new game message");
-                        UI.setPlayerLabel(message.message);
-                        System.out.println("player label set " + message.message);
+                        UI.setPlayerLabel(String.valueOf(message.message.charAt(1)));
+                        System.out.println("player label set " + message.message.charAt(1));
 
 
                         System.out.println("new game message end " + message.message);
 
                     }
-                    else if (message.message.contains("gameOver"))
+                    else if (message.message.contains("/gameOver"))
                     {
                         UI.gameOver();
+                    }
+                    else if (message.message.contains("/message"))
+                    {
+                        UI.newMessage(message.chatMessage);
+                        System.out.println("message received");
                     }
                     else
                     {
