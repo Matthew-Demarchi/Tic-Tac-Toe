@@ -127,7 +127,7 @@ public class inGameOptions {
 
                 break;
             case 1:
-                optionsPane.setStyle("-fx-background-color: linear-gradient(to bottom, lightgreen, lime, gold);");
+                optionsPane.setStyle("-fx-background-color: linear-gradient(hotpink, #AEEEEE, #98FF98, gold);");
                 break;
             case 2:
                 optionsPane.setStyle("-fx-background-color: linear-gradient(to bottom, Skyblue, yellow, darkorange, seagreen);");

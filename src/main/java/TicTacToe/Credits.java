@@ -19,7 +19,7 @@ public class Credits
 
                 break;
             case 1:
-                creditsPane.setStyle("-fx-background-color: linear-gradient(to bottom, lightgreen, lime, gold);");
+                creditsPane.setStyle("-fx-background-color: linear-gradient(hotpink, #AEEEEE, #98FF98, gold);");
                 break;
             case 2:
                 creditsPane.setStyle("-fx-background-color: linear-gradient(to bottom, Skyblue, yellow, darkorange,seagreen);");
