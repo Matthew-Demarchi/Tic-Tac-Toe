@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.ParallelCamera?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.effect.InnerShadow?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="optionsPane" accessibleRole="IMAGE_VIEW" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="300.0" style="-fx-background-color: linear-gradient(lightblue, lightgrey);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TicTacToe.inGameOptions">
+<AnchorPane fx:id="optionsPane" accessibleRole="IMAGE_VIEW" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TicTacToe.inGameOptions">
    <children>
       <Label id="titleLabel" layoutX="110.0" layoutY="37.0" prefHeight="38.0" prefWidth="90.0" text="OPTIONS" textAlignment="CENTER" textFill="#000000bd" textOverrun="CLIP">
          <font>
@@ -104,5 +100,17 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </ToggleButton>
+      <Button fx:id="CreditsButton" layoutX="8.0" layoutY="390.0" mnemonicParsing="false" onAction="#creditsButtonClicked" prefHeight="41.0" prefWidth="46.0" style="-fx-background-color: MEDIUMSPRINGGREEN; -fx-border-color: black;" text="CREDITS">
+         <font>
+            <Font name="System Bold" size="8.0" />
+         </font>
+         <effect>
+            <InnerShadow>
+               <color>
+                  <Color red="0.031578946858644485" green="8.187134517356753E-4" blue="8.187134517356753E-4" opacity="0.7099999785423279" />
+               </color>
+            </InnerShadow>
+         </effect>
+      </Button>
    </children>
 </AnchorPane>

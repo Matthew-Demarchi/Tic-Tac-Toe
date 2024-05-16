@@ -14,6 +14,7 @@ import TicTacToe.sounds.sounds;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -53,16 +54,11 @@ public class inGameOptions {
     private Socket socket;
 
 
-    public void setGameScreenController(gameScreen gameScreenController, Socket socket){
+    public void setGameScreenController(gameScreen gameScreenController, Socket socket) {
 
         this.gameScreenController = gameScreenController;
         this.socket = socket;
 
-        if (gameScreenController.sunsetMode){
-
-            optionsPane.setStyle("-fx-background-color: linear-gradient(to bottom, crimson, lightcoral, skyblue, deepskyblue);");
-
-        }
     }
     public void isVSRealPlayer (boolean vsRealPlayer)
     {
@@ -124,6 +120,42 @@ public class inGameOptions {
             TempForData.musicVolume = newValue.intValue();
             sounds.updateMusicVolume();
         });
+        switch (TempForData.currentTheme)
+        {
+            case 0:
+                optionsPane.setStyle("-fx-background-color: linear-gradient(to bottom, #B0E0E6, #FFFFFF, #C0C0C0)");
+
+                break;
+            case 1:
+                optionsPane.setStyle("-fx-background-color: linear-gradient(to bottom, lightgreen, lime, gold);");
+                break;
+            case 2:
+                optionsPane.setStyle("-fx-background-color: linear-gradient(to bottom, Skyblue, yellow, darkorange, seagreen);");
+                break;
+            case 3:
+                optionsPane.setStyle("-fx-background-color: linear-gradient(to bottom, crimson, lightcoral, skyblue, deepskyblue);");
+                break;
+        }
+    }
+
+    public void creditsButtonClicked()
+    {
+            sounds.playButtonClickSound();
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Credits.fxml"));
+
+                Parent root = fxmlLoader.load();
+                Scene scene = new Scene(root);
+
+                Stage stage = new Stage();
+                stage.initModality(Modality.APPLICATION_MODAL); // Set as modal dialog
+                stage.setTitle("Credits");
+                stage.setScene(scene);
+                stage.showAndWait();
+
+            } catch (IOException e){
+                e.printStackTrace();
+            }
     }
 
     public void sidesOnButtonClicked(ActionEvent event) {
@@ -201,7 +233,6 @@ public class inGameOptions {
         new Thread(new Notifier(socket, "/clearBoard", gameScreenController)).start();
 
         Stage optionsStage = (Stage) (easyButton.getScene().getWindow());
-        gameScreenController.handleOptionsClear(true);
 
         optionsStage.close();
 

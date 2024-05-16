@@ -75,8 +75,19 @@ public class Listener implements Runnable
                     }
                     else if (message.message.contains("/serverShutdown"))
                     {
-//                    UI.quitCommand(true);
-//                    notify.message("/quit");
+                        try {
+                        new Thread(new Notifier(socket, "/serverShutdown", UI)).start();
+
+                        System.out.println("ServerShutdown received");
+                        UI.UIToggleOff();
+                        shutdown = true;
+                        UI.setErrorLabel("We apologize, but the server had shutdown, taking you back to the main menu....");
+
+                            Thread.sleep(1500);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        UI.handleOptionsQuit(true);
                     }
                     else if (message.message.contains("/yourTurn"))
                     {
@@ -146,13 +157,4 @@ public class Listener implements Runnable
         }
     }
 
-    public void shutdown()
-    {
-        shutdown = true;
-        try {
-            socket.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
