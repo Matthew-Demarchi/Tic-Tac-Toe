@@ -19,5 +19,6 @@ public class TempForData
     public static int musicVolume = 100;
 
     public static int mode = 1;
-//do you guys think I should make a temp static class to store the menu data until he tells us a better way to do it?
+
+    public static int currentTheme = 0;
 }

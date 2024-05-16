@@ -92,6 +92,8 @@ public class gameScreen {
     TextArea chatBox;
     @FXML
     Circle chatDot;
+    @FXML
+    Button changeThemeButton;
 
 
     @FXML
@@ -113,7 +115,6 @@ public class gameScreen {
     Line winnerLine = null;
 
 
-    //TODO: fix bug where you can't quit while trying to find a match
 
 
 
@@ -166,11 +167,7 @@ public class gameScreen {
                 chatButton.setDisable(false);
                 chatButton.setVisible(true);
             }
-
-    }
-    public void setMode(int mode)
-    {
-        this.mode = mode;
+            changeTheme();
     }
     public void connectToServer(Socket socket)
     {
@@ -384,16 +381,6 @@ public class gameScreen {
             }
     }
 
-    // signal is passed from the inGameOptions controller
-    // to this gameScreen controller.
-    public void handleOptionsClear(boolean optionsClear){
-
-//        if(optionsClear)
-//            clearBoard();
-    }
-
-    // signal is passed from the inGameOptions controller
-    // to this gameScreen controller.
     public void handleOptionsQuit(boolean optionsQuit) throws IOException {
 
         if(optionsQuit)
@@ -409,112 +396,6 @@ public class gameScreen {
         }
     }
 
-//    private boolean checkWin(ArrayList<Button> buttons2, String symbol) {
-//        // Check rows
-//        for (int i = 0; i < 3; i++) {
-//            if (buttons.get(i * 3).getText().equals(symbol) &&
-//                buttons.get(i * 3 + 1).getText().equals(symbol) &&
-//                buttons.get(i * 3 + 2).getText().equals(symbol)) {
-//                showLine(0, i);
-//                return true; // Winning row
-//            }
-//        }
-//
-//        // Check columns
-//        for (int i = 0; i < 3; i++) {
-//            if (buttons.get(i).getText().equals(symbol) &&
-//                buttons.get(i + 3).getText().equals(symbol) &&
-//                buttons.get(i + 6).getText().equals(symbol)) {
-//                showLine(1, i);
-//                return true; // Winning column
-//            }
-//        }
-//
-//        // Check diagonals
-//        if (buttons.get(0).getText().equals(symbol) &&
-//            buttons.get(4).getText().equals(symbol) &&
-//            buttons.get(8).getText().equals(symbol)) {
-//            showLine(2, 0);
-//            return true; // Winning diagonal
-//        }
-//        if (buttons.get(2).getText().equals(symbol) &&
-//            buttons.get(4).getText().equals(symbol) &&
-//            buttons.get(6).getText().equals(symbol)) {
-//            showLine(2, 1);
-//            return true; // Winning diagonal
-//        }
-//
-//        return false; // No winning combination found
-//    }
-
-//    private boolean isBoardFull(ArrayList<Button> buttons2) {
-//        for (Button button : buttons) {
-//            if (button.getText().isEmpty()) {
-//                return false; // If any cell is empty, the board is not full
-//            }
-//        }
-//        return true; // All cells are filled
-//    }
-
-        // Method to make a move for the AI player
-//        private void makeAIMove() {
-//
-//            int move;
-//            if (TempForData.normalButton)
-//            {
-//                move = TicTacToeAI.TicTacToeAI(false, buttons, ai, human);
-//            }
-//            else
-//            {
-//                move = TicTacToeAI.TicTacToeAI(true, buttons, ai, human);
-//            }
-//
-//            buttons.get(move).setText(ai);
-//            buttons.get(move).setStyle(aiStyle[0]);
-//            buttons.get(move).setDisable(true);
-//            buttonsUsed.add(buttons.get(move));
-//            isGameOver();
-//        }
-
-
-    // Method to handle game over
-//    private void gameOver(String winner) {
-//        // Disable all buttons
-//        for (Button button : buttons) {
-//            button.setDisable(true);
-//        }
-//
-//        // Display game over message
-//        if (winner.equals("draw")) {
-//            currentTurnLabel.setText("Game Over: Draw!");
-//        } else {
-//            currentTurnLabel.setText("Game Over: " + winner + " wins!");
-//        }
-//
-//        // Update statistics
-//        if (winner.equals(human)) {
-//            // Player 1 wins
-//            // Update player 1's win count
-//            player1Wins++;
-//            player1WinsLabel.setText("Player 1: " + player1Wins);
-//        } else if (winner.equals(ai)) {
-//            // Player 2 wins (AI)
-//            // Update player 2's win count
-//            player2Wins++;
-//            player2WinsLabel.setText("Player 2: " + player2Wins);
-//        } else {
-//            // It's a draw
-//            // Update draw count
-//            numOfDraws++;
-//            numOfDrawsLabel.setText("Draws: " + numOfDraws);
-//        }
-//
-//        gameNumber++;
-//        gameCountLabel.setText("GAME #" + gameNumber);
-//
-//        // Optionally, provide an option to start a new game
-//        playAgain();
-//    }
     public void gameOver()
     {
         Platform.runLater(() -> {
@@ -537,25 +418,6 @@ public class gameScreen {
             }
         });
     }
-    // Method to check if the game is over
-//    private boolean isGameOver() {
-//        // Check for win
-//        if (checkWin(buttons, human)) {
-//            gameOver(human);
-//            return true;
-//        } else if (checkWin(buttons, ai)) {
-//            gameOver(ai);
-//            return true;
-//        }
-//
-//        // Check for draw
-//        if (isBoardFull(buttons)) {
-//            gameOver("draw");
-//            return true;
-//        }
-//
-//        return false;
-//    }
 
 
     private void showLine(int type, int number, int winner)
@@ -620,53 +482,6 @@ public class gameScreen {
         }
     }
 
-
-
-//    public void handlePlayAgain(boolean playAgain) throws IOException {
-//        if (playAgain) {
-//
-//            if (TempForData.sidesOnButton)
-//            {
-//                String temp;
-//                temp = human;
-//                human = ai;
-//                ai = temp;
-//
-//                for (int i = 0; i < 3; i++)
-//                {
-//                    temp = humanStyle[i];
-//                    humanStyle[i] = aiStyle[i];
-//                    aiStyle[i] = temp;
-//                }
-//            }
-//            clearBoard();
-//
-//        } else {
-//
-//            quitGame();
-//        }
-//    }
-
-    // simple function to clear board and reset state
-//    private void clearBoard(){
-//
-//        for (Button button : buttons) {
-//            button.setText("");
-//            button.setDisable(false);
-//        }
-//        buttonsUsed.clear();
-//
-//        if (winnerLine != null) {
-//            winnerLine.setVisible(false);
-//            winnerLine = null;
-//        }
-//        if (human.equals("O"))
-//        {
-//            makeAIMove();
-//        }
-//    }
-
-    // simple function to quit game and return to main menu
 
     public void quitGame() throws IOException {
         Platform.runLater(() -> {
@@ -834,24 +649,41 @@ public class gameScreen {
 
 
 
-    public void changeTheme(ActionEvent actionEvent) {
-
-        if(sunsetModeCheckBox.isSelected()){
-
-            gameArea.setStyle("-fx-background-color: linear-gradient(to bottom, crimson, lightcoral, skyblue, deepskyblue);");
-
-            chatArea.setStyle("-fx-background-color: linear-gradient(to bottom, crimson, lightcoral, skyblue, deepskyblue);");
-
-            sunsetMode = true;
+    public void changeThemeClicked(ActionEvent actionEvent) {
+        TempForData.currentTheme++;
+        if (TempForData.currentTheme > 3)
+        {
+            TempForData.currentTheme = 0;
         }
+        changeTheme();
+    }
+    private void changeTheme()
+    {
+        switch (TempForData.currentTheme)
+        {
+            case 0:
+                gameArea.setStyle("-fx-background-color: linear-gradient(to bottom, #B0E0E6, #FFFFFF, #C0C0C0)");
+                chatArea.setStyle("-fx-background-color: linear-gradient(to bottom, #B0E0E6, #FFFFFF, #C0C0C0)");
+                changeThemeButton.setText("Spring");
+                break;
 
-        else{
+            case 1:
+                gameArea.setStyle("-fx-background-color: linear-gradient(to bottom, lightgreen, lime, gold);");
+                chatArea.setStyle("-fx-background-color: linear-gradient(to bottom, lightgreen, lime, gold);");
 
-            gameArea.setStyle("-fx-background-color: linear-gradient(to bottom, lightgrey, lightblue)");
+                changeThemeButton.setText("Summer");
+                break;
+            case 2:
+                gameArea.setStyle("-fx-background-color: linear-gradient(to bottom, Skyblue, yellow, darkorange, seagreen);");
+                chatArea.setStyle("-fx-background-color: linear-gradient(to bottom, Skyblue, yellow, darkorange, seagreen);");
+                changeThemeButton.setText("Fall");
+                break;
+            case 3:
 
-            chatArea.setStyle("-fx-background-color: linear-gradient(to bottom,lightgrey, lightblue);");
-
-            sunsetMode = false;
+                gameArea.setStyle("-fx-background-color: linear-gradient(to bottom, crimson, lightcoral, skyblue, deepskyblue);");
+                chatArea.setStyle("-fx-background-color: linear-gradient(to bottom, crimson, lightcoral, skyblue, deepskyblue);");
+                changeThemeButton.setText("Winter");
+                break;
         }
     }
 }

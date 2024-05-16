@@ -42,6 +42,11 @@ public class Notifier implements Runnable {
                 out.println("/quit");
                 UI.closeSocket();
             }
+            else if (message.contains("/serverShutdown"))
+            {
+                System.out.println(" server shutting down signal");
+                out.println("/serverShutdown");
+            }
             else if (message.contains("/difficulty"))
             {
                 System.out.println(message.charAt(message.length()-1) + " -- difficulty");
@@ -63,7 +68,9 @@ public class Notifier implements Runnable {
                 out.println(message);
             }
                 else
-            {}
+            {
+                System.out.println("invalid message -- " + message);
+            }
 
 
 
