@@ -26,24 +26,17 @@ import java.util.ArrayList;
 import TicTacToe.sounds.sounds;
 import TicTacToe.server.*;
 
-//TODO fix bug when quitting before getting into a 2 player game and fix socket not connecting
 public class gameScreen {
-
-    String ai;
-    String human;
-    String[] aiStyle = new String[3];
+    String player2;
+    String player1;
+    String[] player2Style = new String[3];
     String[] humanStyle = new String[3];
 
     int gameNumber;
-    int player1Wins; //letter x
-    int player2Wins; //letter o
-    BufferedReader reader = null;
-    InputStream input = null;
-    ObjectInputStream objectInput = null;
+    int player1Wins;
+    int player2Wins;
     Thread listener;
-    Thread notifier;
     Listener listen;
-    Notifier notify;
 
     int numOfDraws;
     String player;
@@ -53,8 +46,6 @@ public class gameScreen {
     int mode = 0;
     boolean chatVisible = false;
     boolean quit = false;
-
-    boolean sunsetMode = false;
 
     @FXML
     Label currentTurnLabel;
@@ -87,17 +78,11 @@ public class gameScreen {
     @FXML
     TextField messageField;
     @FXML
-    AnchorPane messagePane;
-    @FXML
     TextArea chatBox;
     @FXML
     Circle chatDot;
     @FXML
     Button changeThemeButton;
-
-
-    @FXML
-    private CheckBox sunsetModeCheckBox;
 
     private static ArrayList<Button> buttonsUsed = new ArrayList<>();
 
@@ -114,10 +99,8 @@ public class gameScreen {
 
     Line winnerLine = null;
 
-
-
-
     public void initialize() {
+        // initializing variables
             buttons.add(boardButton1);
             buttons.add(boardButton2);
             buttons.add(boardButton3);
@@ -148,16 +131,15 @@ public class gameScreen {
             numOfDrawsLabel.setText("Draws: " + Integer.toString(numOfDraws));
             playerNumberLabel.setText("finding opponent...");
             quit = false;
-            //System.out.print(buttons.size());
 
-            ai = "O";
-            human = "X";
+            player2 = "O";
+            player1 = "X";
             humanStyle[0] = "-fx-text-fill: blue; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, blue, 3, 0.1, 0, 0);";
             humanStyle[1] = "-fx-text-fill: blue; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 0.35;";
             humanStyle[2] = "-fx-stroke: blue; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, blue, 3, 0.1, 0, 0);";
-            aiStyle[0] = "-fx-text-fill: black; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, black, 3, 0.1, 0, 0);";
-            aiStyle[1] = "-fx-text-fill: black; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 0.35;";
-            aiStyle[2] = "-fx-stroke: black; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, black, 3, 0.1, 0, 0);";
+            player2Style[0] = "-fx-text-fill: black; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, black, 3, 0.1, 0, 0);";
+            player2Style[1] = "-fx-text-fill: black; -fx-font-weight: bold; -fx-background-color: transparent; -fx-opacity: 0.35;";
+            player2Style[2] = "-fx-stroke: black; -fx-font-weight: bold; -fx-opacity: 1; -fx-effect: dropshadow(gaussian, black, 3, 0.1, 0, 0);";
             UIToggleOff();
             if (TempForData.mode == 1) {
                 chatButton.setDisable(true);
@@ -166,31 +148,26 @@ public class gameScreen {
                 chatButton.setDisable(false);
                 chatButton.setVisible(true);
             }
+            //setting theme
             changeTheme();
     }
+
+
+
     public void connectToServer(Socket socket)
     {
+        //starting listener
         this.socket = socket;
         try {
-            System.out.println("startInitialize");
-
-
-            System.out.println("socket connected");
-
             listen = new Listener(socket, this); // notify
+
             listener = new Thread(listen);
 
             listener.start();
-            System.out.println(mode + " -- mode");
             new Thread(new Notifier(socket, "/mode" + TempForData.mode, this)).start();
-            System.out.println("Listener started");
-
-
-
         } catch(Exception e){
                 throw new RuntimeException(e);
             }
-
     }
 
     @FXML
@@ -200,6 +177,7 @@ public class gameScreen {
         chatArea.setVisible(!chatVisible);
         System.out.println(chatVisible + " chat visible");
 
+        //extending / retracting stage as needed
         Stage stage = (Stage) chatArea.getScene().getWindow();
         if (!chatVisible) {
             chatDot.setVisible(false);
@@ -209,11 +187,13 @@ public class gameScreen {
             chatArea.setVisible(false);
             stage.setWidth(stage.getWidth() - chatArea.getPrefWidth());
         }
-
     }
+
+
     @FXML
     protected void keyPressedInTextEntry(KeyEvent event)
     {
+        //this just lets you click enter to send a message in the chat
         if (event.getCode() == KeyCode.ENTER)
         {
             sendButtonClicked();
@@ -224,21 +204,24 @@ public class gameScreen {
     protected void sendButtonClicked() {
         String text = isNull(messageField);
         if (!text.equalsIgnoreCase("")) {
+            //messages with / cannot be sent due to logic purposes
             if (text.contains("/"))
             {
                 errorLabel.setText("The the character \"/\" is not allowed in messages");
             }
             else
             {
+                //sending message and resetting the message and error field
                 new Thread(new Notifier(socket, "/messagePlayer " + player + ":   " + text, this)).start();
                 messageField.setText("");
                 errorLabel.setText("");
             }
-
         }
-
     }
+
+
     public void newMessage(String text) {
+        //adding message and if the user does not have their chat open, it gives them the alert to let them know that there is a message they have not seen
         chatBox.appendText(text + "\n");
         if (!chatArea.isVisible())
         {
@@ -255,9 +238,11 @@ public class gameScreen {
         }
     }
 
+
     @FXML
     protected void boardButtonHovered(MouseEvent event)
     {
+        //creates a transparent mark to show what their move would be
         if (notEstablished)
         {
             return;
@@ -267,17 +252,15 @@ public class gameScreen {
 
             if (player.equalsIgnoreCase(Integer.toString(game.getxGoesTo())))
             {
-                button.setText(human);
+                button.setText(player1);
                 button.setStyle(humanStyle[1]);
             }
             else
             {
-                button.setText(ai);
-                button.setStyle(aiStyle[1]);
+                button.setText(player2);
+                button.setStyle(player2Style[1]);
             }
-
     }
-
     @FXML
     protected void boardButtonNotHovered(MouseEvent event)
     {
@@ -297,6 +280,7 @@ public class gameScreen {
         }
     }
 
+
     @FXML
     protected void boardButtonClicked(ActionEvent event) {
         if (notEstablished)
@@ -305,24 +289,26 @@ public class gameScreen {
         }
         sounds.playButtonClickSound();
 
+        //set the move
         Button button = (Button) event.getSource();
-        if (!button.isDisable()) {
+        if (!button.isDisable())
+        {
 
                 if (player.equalsIgnoreCase(Integer.toString(game.getxGoesTo())))
                 {
-                    button.setText(human);
+                    button.setText(player1);
                     button.setStyle(humanStyle[0]);
                     currentTurnLabel.setText("Current Turn: O");
 
                 }
                 else
                 {
-                    button.setText(ai);
-                    button.setStyle(aiStyle[0]);
+                    button.setText(player2);
+                    button.setStyle(player2Style[0]);
                     currentTurnLabel.setText("Current Turn: X");
                 }
 
-
+            //turning off UI and checking with server
             button.setDisable(true);
             buttonsUsed.add(button);
             UIToggleOff();
@@ -335,25 +321,23 @@ public class gameScreen {
                     break;
                 }
             }
-
-            }
         }
+    }
 
 
     @FXML
     protected void OptionsButtonClicked()
     {
+        //load and open the options menu, don't let the user interact with the base stage until the options menu is closed
         sounds.playButtonClickSound();
             try {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("inGameOptions.fxml"));
-
 
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
 
         // load the controller file into inGameOptions controller variable
         // then pass the gameScreen controller to the inGameOptions controller
-
         inGameOptions controller = fxmlLoader.getController();
         controller.setGameScreenController(this, socket);
         if (TempForData.mode == 2)
@@ -365,17 +349,16 @@ public class gameScreen {
             controller.isVSRealPlayer(false);
         }
 
-
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL); // Set as modal dialog
         stage.setTitle("Options");
         stage.setScene(scene);
         stage.showAndWait();
-
     } catch (IOException e){
                 e.printStackTrace();
             }
     }
+
 
     public void handleOptionsQuit() throws IOException
     {
@@ -385,6 +368,7 @@ public class gameScreen {
 
     public void closeSocket()
     {
+        //literally, as the name implies, closes the socket
         try {
             socket.close();
         } catch (IOException e) {
@@ -394,6 +378,7 @@ public class gameScreen {
 
     public void gameOver()
     {
+        //handles game over text and calls showLine
         Platform.runLater(() -> {
             if (OptionsButton != null)
             {
@@ -418,6 +403,7 @@ public class gameScreen {
 
     private void showLine(int type, int number, int winner)
     {
+        //handles showing the winner line (if applicable)
         switch (type)
         {
             case 0: // rows
@@ -432,51 +418,21 @@ public class gameScreen {
         }
         winnerLine.setVisible(true);
 
+            if (winner == game.getxGoesTo())
+            {
+                winnerLine.setStyle(humanStyle[2]);
+            }
+            else
+            {
+                winnerLine.setStyle(player2Style[2]);
 
-        if (winner == game.getxGoesTo())
-        {
-            winnerLine.setStyle(humanStyle[2]);
+            }
         }
-        else
-        {
-            winnerLine.setStyle(aiStyle[2]);
-        }
 
-    }
-
-
-    // function to prompt the user whether to play again
-    // Passes the gameScreen controller to the playAgain controller,
-    // which sends a signal back to gameScreen controller
-
-    private void playAgain(){
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("playAgain.fxml"));
-            Parent root = fxmlLoader.load();
-
-            playAgain controller = fxmlLoader.getController();
-            controller.setGameScreenController(this); // pass gameScreen controller to playAgain controller
-
-            Scene scene = new Scene(root);
-            Stage playAgainStage = new Stage();
-
-            playAgainStage.setMaxWidth(300);
-            playAgainStage.setMaxHeight(200);
-
-            playAgainStage.setMinWidth(300);
-            playAgainStage.setMinHeight(200);
-
-            playAgainStage.initModality(Modality.APPLICATION_MODAL); // Set as modal dialog
-            playAgainStage.setScene(scene);
-
-            playAgainStage.showAndWait();
-        } catch (IOException exception){
-            exception.printStackTrace();
-        }
-    }
 
 
     public void quitGame() throws IOException {
+        //reset all the variables and go back to main menu
         Platform.runLater(() -> {
             messageField.setText("");
             chatBox.setText("");
@@ -507,17 +463,20 @@ public class gameScreen {
             primaryStage.setScene(scene);
             primaryStage.show();
         });
-
     }
+
+
     public void setErrorLabel(String message)
     {
         Platform.runLater(() -> {
             errorLabel.setText(message);
         });
-
     }
+
+
     public void UIToggleOn()
     {
+        //turns on the UI
         Platform.runLater(() -> {
             for (int i = 0; i < buttons.size(); i++) {
                 boolean used = false;
@@ -530,11 +489,12 @@ public class gameScreen {
                 }
             }
         });
-
-
     }
+
+
     public void UIToggleOff()
     {
+        //turns off the UI
         Platform.runLater(() -> {
             System.out.println("UI Toggle Off");
             for (int i = 0; i < buttons.size(); i++)
@@ -543,13 +503,12 @@ public class gameScreen {
                 System.out.println(buttons.get(i).getId() + " is disabled");
             }
             System.out.println("UI Toggle Off Done");
-
         });
-
     }
+
+
     public void setPlayerLabel(String player)
     {
-
         Platform.runLater(() -> {
             this.player = player;
             playerNumberLabel.setText("You are player " + player);
@@ -558,9 +517,10 @@ public class gameScreen {
                 UIToggleOff();
             }
         });
-
-        //add something to set x and o
     }
+
+
+    //updates the board and other necessary variables from server
     public void update(Game game)
     {
         System.out.println("update start");
@@ -589,35 +549,35 @@ public class gameScreen {
                 }
                 else if (game.getButton(i) == game.getxGoesTo())
                 {
-                    buttons.get(i).setText(human);
+                    buttons.get(i).setText(player1);
                     buttons.get(i).setStyle(humanStyle[0]);
                 }
                 else
                 {
-                    buttons.get(i).setText(ai);
-                    buttons.get(i).setStyle(aiStyle[0]);
+                    buttons.get(i).setText(player2);
+                    buttons.get(i).setStyle(player2Style[0]);
                 }
             }
             if (player.equalsIgnoreCase(Integer.toString(game.getCurrentPlayer())))
             {
                 if (player.equalsIgnoreCase(Integer.toString(game.getxGoesTo())))
                 {
-                    currentTurnLabel.setText("Current Turn: " + human);
+                    currentTurnLabel.setText("Current Turn: " + player1);
                 }
                 else
                 {
-                    currentTurnLabel.setText("Current Turn: " + ai);
+                    currentTurnLabel.setText("Current Turn: " + player2);
                 }
             }
             else
             {
                 if (player.equalsIgnoreCase(Integer.toString(game.getxGoesTo())))
                 {
-                    currentTurnLabel.setText("Current Turn: " + ai);
+                    currentTurnLabel.setText("Current Turn: " + player2);
                 }
                 else
                 {
-                    currentTurnLabel.setText("Current Turn: " + human);
+                    currentTurnLabel.setText("Current Turn: " + player1);
                 }
             }
             player1WinsLabel.setText("Player1: " + Integer.toString(game.getPlayer1WinCounter()));
@@ -635,11 +595,6 @@ public class gameScreen {
 
 
     }
-    public Socket getSocket()
-    {
-        return socket;
-    }
-
 
 
     public void changeThemeClicked(ActionEvent actionEvent) {
@@ -652,6 +607,7 @@ public class gameScreen {
     }
     private void changeTheme()
     {
+        //set button to next theme
         switch (TempForData.currentTheme)
         {
             //Winter theme
@@ -677,7 +633,5 @@ public class gameScreen {
         }
         gameArea.setStyle(TempForData.theme[TempForData.currentTheme]);
         chatArea.setStyle(TempForData.theme[TempForData.currentTheme]);
-
     }
 }
-
