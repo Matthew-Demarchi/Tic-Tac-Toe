@@ -16,7 +16,7 @@ public class TempForData
 
     public static int soundVolume = 100;
 
-    public static int musicVolume = 100;
+    public static int musicVolume = 30;
 
     public static int mode = 1;
 

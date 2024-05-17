@@ -663,8 +663,9 @@ public class gameScreen {
 
             //spring theme
             case 1:
-                gameArea.setStyle("-fx-background-color: linear-gradient(to bottom, lightgreen, lime, gold);");
-                chatArea.setStyle("-fx-background-color: linear-gradient(to bottom, lightgreen, lime, gold);");
+                gameArea.setStyle("-fx-background-color: linear-gradient(hotpink, #AEEEEE, #98FF98, gold);");
+                chatArea.setStyle("-fx-background-color: linear-gradient(hotpink, #AEEEEE, #98FF98, gold);");
+
 
                 changeThemeButton.setText("Summer");
                 break;
