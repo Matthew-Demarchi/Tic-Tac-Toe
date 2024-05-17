@@ -14,12 +14,14 @@ public class sounds
     private static MediaPlayer backgroundMediaPlayer;
     private static int currentSongIndex;
 
+    //list of all songs
     private static List<String> songUrls = Arrays.asList("src/main/resources/TicTacToe/subway_surfers.mp3",
             "src/main/resources/TicTacToe/New_Friendly.mp3",
             "src/main/resources/TicTacToe/Cipher.mp3",
             "src/main/resources/TicTacToe/Call_to_Adventure.mp3");
 
     private static Media backgroundMusic;
+
     public static void initialize() {
         currentSongIndex = 0;
         Media sound = new Media(new File("src/main/resources/TicTacToe/btnclick.wav").toURI().toString());
@@ -39,6 +41,7 @@ public class sounds
             @Override
             public void run()
             {
+                //go through the songs one by one
                 currentSongIndex++;
                 if (currentSongIndex >= songUrls.size())
                 {
