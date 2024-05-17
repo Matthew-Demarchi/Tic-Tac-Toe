@@ -12,48 +12,46 @@ public class Listener implements Runnable
 {
     Socket socket;
     gameScreen UI;
-//    Notifier notify;
     boolean shutdown = false;
 
     public Listener(Socket socket, gameScreen UI) // gameOver
     {
         this.socket = socket;
         this.UI = UI;
-//        this.notify = notify;
     }
     @Override
     public void run() {
         try {
-            System.out.println("listener now running");
+            //System.out.println("listener now running");
             InputStream input = socket.getInputStream();
-            System.out.println("Input stream working");
-            System.out.println("socket is connected -- " + socket.isConnected());
+            //System.out.println("Input stream working");
+            //System.out.println("socket is connected -- " + socket.isConnected());
             ObjectInputStream objectInput = new ObjectInputStream(input);
-            System.out.println("Object stream working");
-            System.out.println("initialize inputs");
+            //System.out.println("Object stream working");
+            //System.out.println("initialize inputs");
             Message message = null;
             Object object = new Object();
 
             while (!shutdown)
             {
-                System.out.println("start while loop");
+                //System.out.println("start while loop");
                 try {
                     object = objectInput.readObject();
-                    System.out.println("read object");
+                    //System.out.println("read object");
                 } catch (ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 }
                 if (object instanceof Game)
                 {
-                    System.out.println("game instance");
+                    //System.out.println("game instance");
                     Game game = ((Game)object);
-                    System.out.println("buttons -- " + game.buttons());
-                    System.out.println(game.toString());
+                    //System.out.println("buttons -- " + game.buttons());
+                    //System.out.println(game.toString());
                     UI.update(((Game)object));
                 }
-                else if (object instanceof Message) //////////////////////////////////////
+                else if (object instanceof Message)
                 {
-                    System.out.println("message instance");
+                    //System.out.println("message instance");
                     message = (Message)object;
                     if (message == null)
                     {
@@ -61,7 +59,7 @@ public class Listener implements Runnable
                     }
                     else if (message.message.contains("/shutdown"))
                     {
-                        System.out.println("shutdown received");
+                        //System.out.println("shutdown received");
                         UI.UIToggleOff();
                         shutdown = true;
                         UI.setErrorLabel("The other player has quit, taking you back to the main menu....");
@@ -78,7 +76,7 @@ public class Listener implements Runnable
                         try {
                         new Thread(new Notifier(socket, "/serverShutdown", UI)).start();
 
-                        System.out.println("ServerShutdown received");
+                        //System.out.println("ServerShutdown received");
                         UI.UIToggleOff();
                         shutdown = true;
                         UI.setErrorLabel("We apologize, but the server had shutdown, taking you back to the main menu....");
@@ -91,33 +89,31 @@ public class Listener implements Runnable
                     }
                     else if (message.message.contains("/yourTurn"))
                     {
-                        System.out.println("Your turn");
+                        //System.out.println("Your turn");
                         UI.UIToggleOn();
                     }
                     else if (message.message.contains("/notYourTurn"))
                     {
-                        System.out.println("Not your turn");
+                        //System.out.println("Not your turn");
                         UI.UIToggleOff();
                     }
                     else if (message.message.contains("/invalid"))
                     {
-                        System.out.println("Invalid input");
+                        //System.out.println("Invalid input");
                         UI.setErrorLabel("A issue has occurred, your board has been updated. Please make a new move.");
                     }
                     else if (message.message.contains("/valid"))
                     {
-                        System.out.println("Valid input");
+                        //System.out.println("Valid input");
                         UI.setErrorLabel("");
 
                     }
                     else if (message.message.equalsIgnoreCase("/1") || message.message.equalsIgnoreCase("/2"))
                     {
-                        System.out.println("new game message");
+                        //System.out.println("new game message");
                         UI.setPlayerLabel(String.valueOf(message.message.charAt(1)));
-                        System.out.println("player label set " + message.message.charAt(1));
-
-
-                        System.out.println("new game message end " + message.message);
+                        //System.out.println("player label set " + message.message.charAt(1));
+                        //System.out.println("new game message end " + message.message);
 
                     }
                     else if (message.message.contains("/gameOver"))
@@ -127,11 +123,11 @@ public class Listener implements Runnable
                     else if (message.message.contains("/message"))
                     {
                         UI.newMessage(message.chatMessage);
-                        System.out.println("message received");
+                        //System.out.println("message received");
                     }
                     else
                     {
-//                    UI.newMessage(message);
+                        System.out.println("invalid MESSAGE received");
                     }
                 }
                 else
