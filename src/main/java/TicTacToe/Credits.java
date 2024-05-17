@@ -12,21 +12,7 @@ public class Credits
 
     public void initialize()
     {
-        switch (TempForData.currentTheme)
-        {
-            case 0:
-                creditsPane.setStyle("-fx-background-color: linear-gradient(to bottom, #B0E0E6, #FFFFFF, #C0C0C0)");
+        creditsPane.setStyle(TempForData.theme[TempForData.currentTheme]);
 
-                break;
-            case 1:
-                creditsPane.setStyle("-fx-background-color: linear-gradient(hotpink, #AEEEEE, #98FF98, gold);");
-                break;
-            case 2:
-                creditsPane.setStyle("-fx-background-color: linear-gradient(to bottom, Skyblue, yellow, darkorange,seagreen);");
-                break;
-            case 3:
-                creditsPane.setStyle("-fx-background-color: linear-gradient(to bottom, crimson, lightcoral, skyblue, deepskyblue);");
-                break;
-        }
     }
 }

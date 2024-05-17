@@ -656,32 +656,28 @@ public class gameScreen {
         {
             //Winter theme
             case 0:
-                gameArea.setStyle("-fx-background-color: linear-gradient(to bottom, #B0E0E6, #FFFFFF, #C0C0C0)");
-                chatArea.setStyle("-fx-background-color: linear-gradient(to bottom, #B0E0E6, #FFFFFF, #C0C0C0)");
                 changeThemeButton.setText("Spring");
                 break;
-
+            
             //spring theme
-            case 1:
-                gameArea.setStyle("-fx-background-color: linear-gradient(hotpink, #AEEEEE, #98FF98, gold);");
-                chatArea.setStyle("-fx-background-color: linear-gradient(hotpink, #AEEEEE, #98FF98, gold);");
-
-
+            case 1: 
                 changeThemeButton.setText("Summer");
                 break;
+             //summer theme
             case 2:
-                //summer theme
-                gameArea.setStyle("-fx-background-color: linear-gradient(to bottom, Skyblue, yellow, darkorange, seagreen);");
-                chatArea.setStyle("-fx-background-color: linear-gradient(to bottom, Skyblue, yellow, darkorange, seagreen);");
+
                 changeThemeButton.setText("Fall");
                 break;
+            
+           //fall theme
             case 3:
-                //fall theme
-                gameArea.setStyle("-fx-background-color: linear-gradient(to bottom, crimson, lightcoral, skyblue, deepskyblue);");
-                chatArea.setStyle("-fx-background-color: linear-gradient(to bottom, crimson, lightcoral, skyblue, deepskyblue);");
+
                 changeThemeButton.setText("Winter");
                 break;
         }
+        gameArea.setStyle(TempForData.theme[TempForData.currentTheme]);
+        chatArea.setStyle(TempForData.theme[TempForData.currentTheme]);
+
     }
 }
 

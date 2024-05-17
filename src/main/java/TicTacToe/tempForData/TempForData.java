@@ -21,4 +21,6 @@ public class TempForData
     public static int mode = 1;
 
     public static int currentTheme = 0;
+
+    public static String[] theme = {"-fx-background-color: linear-gradient(to bottom, #B0E0E6, #FFFFFF, #C0C0C0)", "-fx-background-color: linear-gradient(hotpink, #AEEEEE, #98FF98, gold);", "-fx-background-color: linear-gradient(to bottom, Skyblue, yellow, darkorange, seagreen);", "-fx-background-color: linear-gradient(to bottom, crimson, lightcoral, skyblue, deepskyblue);"};
 }
