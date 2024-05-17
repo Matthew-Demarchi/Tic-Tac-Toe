@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -72,6 +73,8 @@ public class gameScreen {
     @FXML
     Button chatButton;
     @FXML
+    Button sendButton;
+    @FXML
     AnchorPane chatArea;
     @FXML
     AnchorPane gameArea;
@@ -83,6 +86,10 @@ public class gameScreen {
     Circle chatDot;
     @FXML
     Button changeThemeButton;
+    @FXML
+    Polygon sendAirplaneInner;
+    @FXML
+    Polygon sendAirplaneOuter;
 
     private static ArrayList<Button> buttonsUsed = new ArrayList<>();
 
@@ -196,7 +203,10 @@ public class gameScreen {
         //this just lets you click enter to send a message in the chat
         if (event.getCode() == KeyCode.ENTER)
         {
-            sendButtonClicked();
+            if (!sendButton.isDisabled())
+            {
+                sendButtonClicked();
+            }
         }
     }
 
@@ -383,8 +393,18 @@ public class gameScreen {
             if (OptionsButton != null)
             {
                 OptionsButton.setDisable(true);
-
             }
+            if (sendButton != null)
+            {
+                sendButton.setDisable(true);
+                if (sendAirplaneInner != null && sendAirplaneOuter != null)
+                {
+                    System.out.println("lowering opacity");
+                    sendAirplaneInner.setOpacity(.3);
+                    sendAirplaneOuter.setOpacity(.3);
+                }
+            }
+
             int[] winner = game.getWinner();
             if (winner[0] == 1 || winner[0] == 2) {
                 showLine(winner[1], winner[2], winner[0]);
@@ -537,6 +557,15 @@ public class gameScreen {
             if (OptionsButton != null)
             {
                 OptionsButton.setDisable(false);
+            }
+            if (sendButton != null)
+            {
+                sendButton.setDisable(false);
+                if (sendAirplaneInner != null && sendAirplaneOuter != null)
+                {
+                    sendAirplaneInner.setOpacity(1);
+                    sendAirplaneOuter.setOpacity(1);
+                }
             }
             this.game = game;
             for (int i = 0; i < buttons.size(); i++)
