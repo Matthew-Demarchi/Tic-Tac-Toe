@@ -99,9 +99,6 @@ public class inGameOptions {
 
 
     public void initialize(){
-
-
-
         easyButton.setSelected(TempForData.easyButton);
         sidesOffButton.setSelected(TempForData.sidesOffButton);
         normalButton.setSelected(TempForData.normalButton);
@@ -120,22 +117,9 @@ public class inGameOptions {
             TempForData.musicVolume = newValue.intValue();
             sounds.updateMusicVolume();
         });
-        switch (TempForData.currentTheme)
-        {
-            case 0:
-                optionsPane.setStyle("-fx-background-color: linear-gradient(to bottom, #B0E0E6, #FFFFFF, #C0C0C0)");
 
-                break;
-            case 1:
-                optionsPane.setStyle("-fx-background-color: linear-gradient(hotpink, #AEEEEE, #98FF98, gold);");
-                break;
-            case 2:
-                optionsPane.setStyle("-fx-background-color: linear-gradient(to bottom, Skyblue, yellow, darkorange, seagreen);");
-                break;
-            case 3:
-                optionsPane.setStyle("-fx-background-color: linear-gradient(to bottom, crimson, lightcoral, skyblue, deepskyblue);");
-                break;
-        }
+        optionsPane.setStyle(TempForData.theme[TempForData.currentTheme]);
+
     }
 
     public void creditsButtonClicked()
@@ -235,7 +219,5 @@ public class inGameOptions {
         Stage optionsStage = (Stage) (easyButton.getScene().getWindow());
 
         optionsStage.close();
-
-
     }
 }
