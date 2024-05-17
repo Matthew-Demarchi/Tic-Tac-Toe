@@ -2,14 +2,12 @@ package TicTacToe;
 
 import TicTacToe.tempForData.TempForData;
 import javafx.animation.PauseTransition;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import TicTacToe.sounds.sounds;
 import javafx.util.Duration;
@@ -31,7 +29,7 @@ public class mainMenu
     @FXML
     protected void onePlayerModeClicked()
     {
-        //code to switch screen/scene to one player game
+        //code to switch screen to game screen, connect to the server, and start the right mode for 1 player
         TempForData.mode = 1;
         try {
             Socket socket = new Socket("localhost", 80);
@@ -58,7 +56,9 @@ public class mainMenu
     }
 
     @FXML
-    protected void twoPlayerMode() {
+    protected void twoPlayerMode()
+    {
+        //code to switch screen to game screen, connect to the server, and start the right mode for 2 player
         TempForData.mode = 2;
         try {
             Socket socket = new Socket("localhost", 80);
