@@ -197,7 +197,7 @@ public class inGameOptions {
 
         if (!gameScreenController.quit)
         {
-            System.out.println("game screen socket is connected");
+//            System.out.println("game screen socket is connected");
             gameScreenController.handleOptionsQuit();
             ((Stage) easyButton.getScene().getWindow()).close();
         }

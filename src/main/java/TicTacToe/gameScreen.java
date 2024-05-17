@@ -175,7 +175,7 @@ public class gameScreen {
     {
         chatVisible = chatArea.isVisible();
         chatArea.setVisible(!chatVisible);
-        System.out.println(chatVisible + " chat visible");
+//        System.out.println(chatVisible + " chat visible");
 
         //extending / retracting stage as needed
         Stage stage = (Stage) chatArea.getScene().getWindow();
@@ -247,7 +247,7 @@ public class gameScreen {
         {
             return;
         }
-        System.out.println("hovered");
+//        System.out.println("hovered");
         Button button = (Button) event.getSource();
 
             if (player.equalsIgnoreCase(Integer.toString(game.getxGoesTo())))
@@ -314,7 +314,7 @@ public class gameScreen {
             UIToggleOff();
             for (int i = 0; i < buttons.size(); i++)
             {
-                System.out.println("i is equal to " + i);
+//                System.out.println("i is equal to " + i);
                 if (button == buttons.get(i))
                 {
                     new Thread(new Notifier(socket, "/move" + i, this)).start();
@@ -484,7 +484,7 @@ public class gameScreen {
                     used = true;
                 }
                 if (!used) {
-                    System.out.println(buttons.get(i).getId() + " is not disabled");
+//                    System.out.println(buttons.get(i).getId() + " is not disabled");
                     buttons.get(i).setDisable(false);
                 }
             }
@@ -496,13 +496,13 @@ public class gameScreen {
     {
         //turns off the UI
         Platform.runLater(() -> {
-            System.out.println("UI Toggle Off");
+//            System.out.println("UI Toggle Off");
             for (int i = 0; i < buttons.size(); i++)
             {
                 buttons.get(i).setDisable(true);
-                System.out.println(buttons.get(i).getId() + " is disabled");
+//                System.out.println(buttons.get(i).getId() + " is disabled");
             }
-            System.out.println("UI Toggle Off Done");
+//            System.out.println("UI Toggle Off Done");
         });
     }
 
@@ -523,9 +523,9 @@ public class gameScreen {
     //updates the board and other necessary variables from server
     public void update(Game game)
     {
-        System.out.println("update start");
+//        System.out.println("update start");
         Platform.runLater(() -> {
-            System.out.println("update2");
+//            System.out.println("update2");
             if (winnerLine != null)
             {
                 winnerLine.setVisible(false);
@@ -619,15 +619,14 @@ public class gameScreen {
             case 1: 
                 changeThemeButton.setText("Summer");
                 break;
+
              //summer theme
             case 2:
-
                 changeThemeButton.setText("Fall");
                 break;
             
            //fall theme
             case 3:
-
                 changeThemeButton.setText("Winter");
                 break;
         }
