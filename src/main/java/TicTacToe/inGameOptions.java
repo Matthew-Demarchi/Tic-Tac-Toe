@@ -11,21 +11,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import TicTacToe.sounds.sounds;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Line;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class inGameOptions {
-    private Stage mainStage;
-
-    private Line winnerLine;
 
 
     @FXML
@@ -206,7 +198,7 @@ public class inGameOptions {
         if (!gameScreenController.quit)
         {
             System.out.println("game screen socket is connected");
-            gameScreenController.handleOptionsQuit(true);
+            gameScreenController.handleOptionsQuit();
             ((Stage) easyButton.getScene().getWindow()).close();
         }
     }

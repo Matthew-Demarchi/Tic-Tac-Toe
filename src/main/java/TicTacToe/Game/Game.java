@@ -11,6 +11,9 @@ public class Game implements Serializable {
     int player2WinCounter = 0;
     int draws = 0;
     int whoGetsFirstMove = 1;
+    //first number is if there is a winner or not, 2nd number is if its a diagonal/row/column win
+    //3rd number (0 = row/column 1 win, 1 = row/column 2 win, 2 = row/column 3 win
+    //3rd number for diagonal: 0 or 1
     int[] winner = {0, 0, 0};
     int currentPlayer = 1;
     int xGoesTo = 1;

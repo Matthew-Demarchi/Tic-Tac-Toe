@@ -360,14 +360,11 @@ public class gameScreen {
     }
 
 
-    public void handleOptionsQuit(boolean optionsQuit) throws IOException
+    public void handleOptionsQuit() throws IOException
     {
-        //send quit message to server and then quit the game
-        if(optionsQuit)
-            new Thread(new Notifier(socket, "/quit", this)).start();
-            quitGame();
+        new Thread(new Notifier(socket, "/quit", this)).start();
+        quitGame();
     }
-
 
     public void closeSocket()
     {
@@ -431,6 +428,8 @@ public class gameScreen {
 
             }
         }
+
+
 
     public void quitGame() throws IOException {
         //reset all the variables and go back to main menu
@@ -611,15 +610,22 @@ public class gameScreen {
         //set button to next theme
         switch (TempForData.currentTheme)
         {
+            //Winter theme
             case 0:
                 changeThemeButton.setText("Spring");
                 break;
-            case 1:
+            
+            //spring theme
+            case 1: 
                 changeThemeButton.setText("Summer");
                 break;
+             //summer theme
             case 2:
+
                 changeThemeButton.setText("Fall");
                 break;
+            
+           //fall theme
             case 3:
 
                 changeThemeButton.setText("Winter");
