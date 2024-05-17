@@ -71,7 +71,7 @@ public class Listener implements Runnable
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
-                        UI.handleOptionsQuit(true);
+                        UI.handleOptionsQuit();
                     }
                     else if (message.message.contains("/serverShutdown"))
                     {
@@ -87,7 +87,7 @@ public class Listener implements Runnable
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
-                        UI.handleOptionsQuit(true);
+                        UI.handleOptionsQuit();
                     }
                     else if (message.message.contains("/yourTurn"))
                     {
