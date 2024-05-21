@@ -41,6 +41,7 @@ public class mainMenu
                 root = onePlayer.load();
                 gameScreen gameScreen = (gameScreen) onePlayer.getController();
                 gameScreen.connectToServer(socket);
+                gameScreen.handleUnplannedClose(stage);
                 Scene scene = new Scene(root);
                 stage.setWidth(615);
                 stage.setScene(scene);
@@ -69,6 +70,7 @@ public class mainMenu
                 root = onePlayer.load();
                 gameScreen gameScreen = (gameScreen) onePlayer.getController();
                 gameScreen.connectToServer(socket);
+                gameScreen.handleUnplannedClose(stage);
                 Scene scene = new Scene(root);
                 stage.setWidth(615);
                 stage.setScene(scene);

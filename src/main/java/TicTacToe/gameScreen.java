@@ -157,9 +157,23 @@ public class gameScreen {
             }
             //setting theme
             changeTheme();
+
+//            on close properly shut everything down
+//            Stage stage = (Stage) boardButton1.getScene().getWindow();
+
+
     }
 
-
+    public void handleUnplannedClose(Stage stage)
+    {
+        stage.setOnCloseRequest(event -> {
+            try {
+                handleOptionsQuit();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
 
     public void connectToServer(Socket socket)
     {
